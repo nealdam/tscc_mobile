@@ -14,7 +14,7 @@
         android:layout_above="@id/llWelcomeButton"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
-        android:contentDescription="Logo" />
+        android:contentDescription="@string/welcome_logo" />
 
     <LinearLayout
         android:id="@+id/llWelcomeButton"
@@ -28,16 +28,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginRight="5dp"
-            android:text="Register"/>
+            android:layout_marginEnd="5dp"
+            android:text="@string/register"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="5dp"
-            android:text="Login" />
+            android:layout_marginStart="5dp"
+            android:text="@string/login" />
 
     </LinearLayout>
 
