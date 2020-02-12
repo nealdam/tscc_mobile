@@ -3,4 +3,6 @@
     <string name="welcome_logo">Welcome Logo</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
+    <string name="phone_number">Phone number</string>
+    <string name="send">Send</string>
 </resources>
