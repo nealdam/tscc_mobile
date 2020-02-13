@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="@dimen/default_space"
     tools:context=".RequestActivity">
 
     <TextView
@@ -15,15 +15,15 @@
         android:layout_centerHorizontal="true"
         android:text="@string/new_request"
         android:textAlignment="center"
-        android:textSize="50sp" />
+        android:textSize="@dimen/txt1" />
 
     <GridView
         android:id="@+id/gvRequestImageGrid"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/image_grid_height"
         android:layout_below="@id/tvNewRequest"
-        android:layout_marginTop="10dp"
-        android:columnWidth="100dp"
+        android:layout_marginTop="@dimen/default_space"
+        android:columnWidth="@dimen/image_grid_item_width"
         android:numColumns="auto_fit" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/gvRequestImageGrid"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/default_space"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:hint="@string/type">
 
@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tilRequestType"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/default_space"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:hint="@string/width">
 
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tilRequestWidth"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/default_space"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:hint="@string/size">
 
@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tilRequestSize"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/default_space"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:hint="@string/location">
 
@@ -90,10 +90,10 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:layout_width="150dp"
+        android:layout_width="@dimen/btn4"
         android:layout_height="wrap_content"
         android:layout_below="@id/tilRequestLocation"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/default_space"
         android:layout_centerHorizontal="true"
         android:text="@string/send_request"/>
 
