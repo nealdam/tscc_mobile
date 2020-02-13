@@ -16,4 +16,8 @@
     <string name="width">Width</string>
     <string name="location">Location</string>
     <string name="send_request">Send request</string>
+    <string name="app_logo">App logo</string>
+    <string name="contact">Contact</string>
+    <string name="term_and_condition">Term and condition</string>
+    <string name="use_guide">Use guide</string>
 </resources>
