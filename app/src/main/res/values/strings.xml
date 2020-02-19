@@ -21,4 +21,6 @@
     <string name="term_and_condition">Term and condition</string>
     <string name="use_guide">Use guide</string>
     <string name="notification">Notification</string>
+    <string name="full_name">Full name</string>
+    <string name="email">Email</string>
 </resources>
