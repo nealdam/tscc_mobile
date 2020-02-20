@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1027311112461",
+    "firebase_url": "https://tscc-f1773.firebaseio.com",
+    "project_id": "tscc-f1773",
+    "storage_bucket": "tscc-f1773.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027311112461:android:d59d50a4b03a79aa4f2044",
+        "android_client_info": {
+          "package_name": "capstone.spring20.tscc_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027311112461-iib0ld6b8h3hvoo7a440623eh9mknk97.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "capstone.spring20.tscc_mobile",
+            "certificate_hash": "8f879ffc7a9491d3fa3a42487fa86f6b7a68101f"
+          }
+        },
+        {
+          "client_id": "1027311112461-2mlmf7ag77jj0123j03399npbbktm701.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6lkU02RMcBe4bEPuYXWxVBnBOVOapA08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027311112461-2mlmf7ag77jj0123j03399npbbktm701.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
