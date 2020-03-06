@@ -19,7 +19,6 @@ public class CaptureImagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_images);
 
-        trashRequest = new TrashRequest();
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 1);
@@ -31,11 +30,14 @@ public class CaptureImagesActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-
             Bitmap image = (Bitmap) data.getExtras().get("data");
-            trashRequest.ImageList.add(image);
 
-            startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 1);
+            Intent intent = new Intent(this, RequestActivity.class);
+            intent.putExtra("image", image);
+            startActivity(intent);
+            finish();
+            return;
+
         }
     }
 }

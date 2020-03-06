@@ -9,16 +9,21 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface TSCCClient {
 
-    @GET("/citizen-management/managed-citizens/{id}")
-    Call<Citizen> getCitizenById(@Path("id") String id);
+    @POST("/trash-forms")
+    Call<TrashRequest> sendTrashRequest(@Header("Authorization") String token,
+                                        @Body TrashRequest trashRequest);
 
-    @POST("/citizen-management/managed-citizens")
-    Call<CitizenToPost> CreateCitizen(@Body CitizenToPost citizen);
+//    @GET("/citizen-management/managed-citizens/{id}")
+//    Call<Citizen> getCitizenById(@Path("id") String id);
+//
+//    @POST("/citizen-management/managed-citizens")
+//    Call<CitizenToPost> CreateCitizen(@Body CitizenToPost citizen);
 
 }

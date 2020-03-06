@@ -9,24 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrashRequest {
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("requestDate")
-    @Expose
-    private String requestDate;
-    @SerializedName("finishedDate")
-    @Expose
-    private String finishedDate;
-    @SerializedName("location")
-    @Expose
-    private String location;
-    @SerializedName("imageLocation")
-    @Expose
-    private Object imageLocation;
-    @SerializedName("description")
-    @Expose
-    private Object description;
+
     @SerializedName("trashType")
     @Expose
     private String trashType;
@@ -36,68 +19,21 @@ public class TrashRequest {
     @SerializedName("trashWidth")
     @Expose
     private String trashWidth;
-    @SerializedName("trashRequestStatus")
+    @SerializedName("latitude")
     @Expose
-    private String trashRequestStatus;
-    @SerializedName("citizen")
+    private double latitude;
+    @SerializedName("longitude")
     @Expose
-    private Object citizen;
-
-    @SerializedName("ImageList")
+    private double longitude;
+    @SerializedName("imageList")
     @Expose
-    public List<Bitmap> ImageList = new ArrayList<>();
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getRequestDate() {
-        return requestDate;
-    }
-
-    public void setRequestDate(String requestDate) {
-        this.requestDate = requestDate;
-    }
-
-    public String getFinishedDate() {
-        return finishedDate;
-    }
-
-    public void setFinishedDate(String finishedDate) {
-        this.finishedDate = finishedDate;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Object getImageLocation() {
-        return imageLocation;
-    }
-
-    public void setImageLocation(Object imageLocation) {
-        this.imageLocation = imageLocation;
-    }
-
-    public Object getDescription() {
-        return description;
-    }
-
-    public void setDescription(Object description) {
-        this.description = description;
-    }
+    public List<String> imageList = new ArrayList<>();
 
     public String getTrashType() {
         return trashType;
     }
+
+
 
     public void setTrashType(String trashType) {
         this.trashType = trashType;
@@ -119,19 +55,37 @@ public class TrashRequest {
         this.trashWidth = trashWidth;
     }
 
-    public String getTrashRequestStatus() {
-        return trashRequestStatus;
+
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setTrashRequestStatus(String trashRequestStatus) {
-        this.trashRequestStatus = trashRequestStatus;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public Object getCitizen() {
-        return citizen;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setCitizen(Object citizen) {
-        this.citizen = citizen;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public TrashRequest(String trashType, String trashSize, String trashWidth, double latitude, double longitude, List<String> imageList) {
+        this.trashType = trashType;
+        this.trashSize = trashSize;
+        this.trashWidth = trashWidth;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.imageList = imageList;
+    }
+
+    public List<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
     }
 }
