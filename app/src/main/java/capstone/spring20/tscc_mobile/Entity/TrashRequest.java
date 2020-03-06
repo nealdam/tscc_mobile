@@ -1,7 +1,5 @@
 package capstone.spring20.tscc_mobile.Entity;
 
-import android.graphics.Bitmap;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,49 +8,49 @@ import java.util.List;
 
 public class TrashRequest {
 
-    @SerializedName("trashType")
+    @SerializedName("trashTypeId")
     @Expose
-    private String trashType;
-    @SerializedName("trashSize")
+    private String trashTypeId;
+    @SerializedName("trashSizeId")
     @Expose
-    private String trashSize;
-    @SerializedName("trashWidth")
+    private String trashSizeId;
+    @SerializedName("trashWidthId")
     @Expose
-    private String trashWidth;
+    private String trashWidthId;
     @SerializedName("latitude")
     @Expose
     private double latitude;
     @SerializedName("longitude")
     @Expose
     private double longitude;
-    @SerializedName("imageList")
+    @SerializedName("imageDirectories")
     @Expose
-    public List<String> imageList = new ArrayList<>();
+    public List<String> imageDirectories = new ArrayList<>();
 
-    public String getTrashType() {
-        return trashType;
+    public String getTrashTypeId() {
+        return trashTypeId;
     }
 
 
 
-    public void setTrashType(String trashType) {
-        this.trashType = trashType;
+    public void setTrashTypeId(String trashTypeId) {
+        this.trashTypeId = trashTypeId;
     }
 
-    public String getTrashSize() {
-        return trashSize;
+    public String getTrashSizeId() {
+        return trashSizeId;
     }
 
-    public void setTrashSize(String trashSize) {
-        this.trashSize = trashSize;
+    public void setTrashSizeId(String trashSizeId) {
+        this.trashSizeId = trashSizeId;
     }
 
-    public String getTrashWidth() {
-        return trashWidth;
+    public String getTrashWidthId() {
+        return trashWidthId;
     }
 
-    public void setTrashWidth(String trashWidth) {
-        this.trashWidth = trashWidth;
+    public void setTrashWidthId(String trashWidthId) {
+        this.trashWidthId = trashWidthId;
     }
 
 
@@ -72,20 +70,20 @@ public class TrashRequest {
         this.longitude = longitude;
     }
 
-    public TrashRequest(String trashType, String trashSize, String trashWidth, double latitude, double longitude, List<String> imageList) {
-        this.trashType = trashType;
-        this.trashSize = trashSize;
-        this.trashWidth = trashWidth;
+    public TrashRequest(String trashTypeId, String trashSizeId, String trashWidthId, double latitude, double longitude, List<String> imageDirectories) {
+        this.trashTypeId = trashTypeId;
+        this.trashSizeId = trashSizeId;
+        this.trashWidthId = trashWidthId;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.imageList = imageList;
+        this.imageDirectories = imageDirectories;
     }
 
-    public List<String> getImageList() {
-        return imageList;
+    public List<String> getImageDirectories() {
+        return imageDirectories;
     }
 
-    public void setImageList(List<String> imageList) {
-        this.imageList = imageList;
+    public void setImageDirectories(List<String> imageDirectories) {
+        this.imageDirectories = imageDirectories;
     }
 }
