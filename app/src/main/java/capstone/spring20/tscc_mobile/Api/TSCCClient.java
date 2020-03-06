@@ -16,14 +16,15 @@ import retrofit2.http.Path;
 
 public interface TSCCClient {
 
-    @POST("/trash-forms")
-    Call<TrashRequest> sendTrashRequest(@Header("Authorization") String token,
-                                        @Body TrashRequest trashRequest);
+    @POST("/api/trash-forms")
+    Call<TrashRequest> sendTrashRequest(@Body TrashRequest trashRequest);
 
-//    @GET("/citizen-management/managed-citizens/{id}")
-//    Call<Citizen> getCitizenById(@Path("id") String id);
-//
-//    @POST("/citizen-management/managed-citizens")
-//    Call<CitizenToPost> CreateCitizen(@Body CitizenToPost citizen);
+
+
+    @GET("/citizen-management/managed-citizens/{id}")
+    Call<Citizen> getCitizenById(@Path("id") String id);
+
+    @POST("/citizen-management/managed-citizens")
+    Call<CitizenToPost> CreateCitizen(@Body CitizenToPost citizen);
 
 }
