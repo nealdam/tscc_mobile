@@ -28,10 +28,15 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import capstone.spring20.tscc_mobile.Api.ApiController;
+import capstone.spring20.tscc_mobile.Api.TSCCClient;
 import capstone.spring20.tscc_mobile.Entity.TrashRequest;
 import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RequestActivity extends AppCompatActivity {
 
@@ -44,6 +49,7 @@ public class RequestActivity extends AppCompatActivity {
     String imageEncoded;
     List<String> imageStringList = new ArrayList<>();
     List<Bitmap> imageList = new ArrayList<>();
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +85,7 @@ public class RequestActivity extends AppCompatActivity {
                         myLatitude, myLongitude,
                         imageStringList);
                 //then send request to api
-
+                postTrashRequest(trashRequest);
             }
         });
 
@@ -116,6 +122,21 @@ public class RequestActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "st wrong", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void postTrashRequest(TrashRequest trashRequest) {
+        TSCCClient client = ApiController.getTsccClient();
+        Call<TrashRequest> call = client.sendTrashRequest(trashRequest);
+        call.enqueue(new Callback<TrashRequest>() {
+            @Override
+            public void onResponse(Call<TrashRequest> call, Response<TrashRequest> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<TrashRequest> call, Throwable t) {
+            }
+        });
     }
 
     public void setupBasic(){
