@@ -24,9 +24,7 @@
         android:layout_below="@id/tvNewRequest"
         android:layout_marginTop="@dimen/default_space"
         android:columnWidth="@dimen/image_grid_item_width"
-        android:numColumns="auto_fit" >
-
-    </GridView>
+        android:numColumns="auto_fit" />
 
 <!--    <com.google.android.material.textfield.TextInputLayout-->
 <!--        android:id="@+id/tilRequestType"-->
@@ -147,6 +145,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_space"
         android:text="@string/send_request" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGallery"
+        android:layout_width="@dimen/btn4"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSendRequest"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/default_space"
+        android:text="Gallery" />
 
 
 </RelativeLayout>

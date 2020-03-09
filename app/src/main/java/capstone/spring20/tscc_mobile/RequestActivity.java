@@ -1,8 +1,12 @@
 package capstone.spring20.tscc_mobile;
 
+import android.content.ClipData;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,12 +36,14 @@ import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
 public class RequestActivity extends AppCompatActivity {
 
     Spinner mType, mWidth, mSize;
-    Button mSubmit;
+    Button mSubmit, mGallery;
     FusedLocationProviderClient mFusedLocationClient;
     double myLatitude;
     double myLongitude;
     Bitmap image;
     String imageEncoded;
+    List<String> imageStringList = new ArrayList<>();
+    List<Bitmap> imageList = new ArrayList<>();
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +56,8 @@ public class RequestActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         if (data != null) {
             image = (Bitmap) data.get("image");
-            imageEncoded = convertBitmapToString(image);
+            imageList.add(image);
         }
-
-
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,22 +66,56 @@ public class RequestActivity extends AppCompatActivity {
                 String trashType = mType.getSelectedItem().toString();
                 String trashSize = mSize.getSelectedItem().toString();
                 String trashWidth = mWidth.getSelectedItem().toString();
-                List<String> imageList = new ArrayList<>();
-                if (image != null) {
-                    imageEncoded = convertBitmapToString(image);
-                    imageList.add(imageEncoded);
+                if (!imageList.isEmpty()) {
+                    for (Bitmap img : imageList) {
+                        imageEncoded = convertBitmapToString(img);
+                        imageStringList.add(imageEncoded);
+                    }
                 }
 
                 TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType),
                         TrashSizeConstant.getTrashSizeId(trashSize),
                         TrashWidthConstant.getTrashWidthId(trashWidth),
                         myLatitude, myLongitude,
-                        imageList);
+                        imageStringList);
                 //then send request to api
 
             }
         });
 
+        mGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (requestCode == 1 && resultCode == RESULT_OK && null != data && null != data.getClipData()) {
+                ClipData mClipData = data.getClipData();
+
+                for (int i = 0; i < mClipData.getItemCount(); i++) {
+                    Uri uri = mClipData.getItemAt(i).getUri();
+                    Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    imageList.add(img);
+                }
+            } else {
+                Toast.makeText(this, "You haven't picked any Image",
+                        Toast.LENGTH_LONG).show();
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(this, "st wrong", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void setupBasic(){
@@ -85,6 +124,7 @@ public class RequestActivity extends AppCompatActivity {
         mWidth = findViewById(R.id.spWidth);
         mSubmit = findViewById(R.id.btnSendRequest);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mGallery = findViewById(R.id.btnGallery);
     }
 
     public void setupSpinner() {
