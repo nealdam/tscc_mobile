@@ -23,6 +23,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -34,11 +35,13 @@ import capstone.spring20.tscc_mobile.Entity.TrashRequest;
 import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
+import capstone.spring20.tscc_mobile.util.FirebaseJWTUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RequestActivity extends AppCompatActivity {
+    String TAG = "RequestActivity";
 
     Spinner mType, mWidth, mSize;
     Button mSubmit, mGallery;
@@ -99,6 +102,7 @@ public class RequestActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
             }
         });
+
 
     }
 

@@ -20,9 +20,12 @@ import com.google.firebase.auth.GetTokenResult;
 
 import java.util.Arrays;
 
+import capstone.spring20.tscc_mobile.util.FirebaseJWTUtil;
+
 public class WelcomeActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
+    private static final String TAG = "WelcomeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

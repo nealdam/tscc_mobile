@@ -18,7 +18,8 @@ public interface TSCCClient {
 
 
     @POST("/api/trash-forms")
-    Call<TrashRequest> sendTrashRequest(@Body TrashRequest trashRequest);
+    Call<TrashRequest> sendTrashRequest(@Header("Authorization") String authorization,
+            @Body TrashRequest trashRequest);
 
 
 
