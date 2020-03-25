@@ -24,13 +24,13 @@
         <activity android:name=".HistoryDetailActivity"></activity>
         <activity android:name=".NotificationAndHistoryActivity" />
         <activity android:name=".DetailInfomationActivity" />
-        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".CaptureImagesActivity" />
         <activity android:name=".CitizenProfileActivity" />
         <activity android:name=".InformationActivity" />
         <activity android:name=".RequestActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".CaptureImagesActivity">
+        <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

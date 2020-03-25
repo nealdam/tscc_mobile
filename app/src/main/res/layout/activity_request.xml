@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/new_request"
+        android:text="Trash Infomation"
         android:textAlignment="center"
         android:textSize="@dimen/txt1" />
 
@@ -149,19 +149,19 @@
         android:id="@+id/btnSendRequest"
         android:layout_width="@dimen/btn4"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnGallery"
+        android:layout_below="@id/btnLibrary"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_space"
         android:text="@string/send_request" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGallery"
+        android:id="@+id/btnLibrary"
         android:layout_width="@dimen/btn4"
         android:layout_height="wrap_content"
         android:layout_below="@id/spSize"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/default_space"
-        android:text="Image Gallery"
+        android:text="Image Library"
         app:backgroundTint="#4CAF50" />
 
 

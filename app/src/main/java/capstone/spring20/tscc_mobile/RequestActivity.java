@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,7 +25,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -147,10 +145,11 @@ public class RequestActivity extends AppCompatActivity {
         call.enqueue(new Callback<TrashRequest>() {
             @Override
             public void onResponse(Call<TrashRequest> call, Response<TrashRequest> response) {
-
+                Toast.makeText(RequestActivity.this, "Send request success", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onFailure(Call<TrashRequest> call, Throwable t) {
+                Toast.makeText(RequestActivity.this, "Send request fail", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -161,13 +160,13 @@ public class RequestActivity extends AppCompatActivity {
         mWidth = findViewById(R.id.spWidth);
         mSubmit = findViewById(R.id.btnSendRequest);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mGallery = findViewById(R.id.btnGallery);
+        mGallery = findViewById(R.id.btnLibrary);
         mImageNum = findViewById(R.id.txtImageNum);
         mImageView = findViewById(R.id.imageView);
     }
 
     public void setupSpinner() {
-        // Create an ArraytrashTypeAdapter using the string array and a default spinner layout
+        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> trashTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.trashType, android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> trashWidthAdapter = ArrayAdapter.createFromResource(this,
@@ -179,7 +178,7 @@ public class RequestActivity extends AppCompatActivity {
         trashTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         trashSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         trashWidthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the trashTypeAdapter to the spinner
+        // Apply the Adapter to the spinner
         mType.setAdapter(trashTypeAdapter);
         mSize.setAdapter(trashSizeAdapter);
         mWidth.setAdapter(trashWidthAdapter);
@@ -190,7 +189,6 @@ public class RequestActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
                         Location location = task.getResult();
-                        Toast.makeText(RequestActivity.this, location.toString(), Toast.LENGTH_LONG).show();
                         if (location != null) {
                            myLatitude = location.getLatitude();
                            myLongitude = location.getLongitude();

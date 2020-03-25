@@ -44,8 +44,7 @@ public class WelcomeActivity extends AppCompatActivity {
                             .createSignInIntentBuilder()
                             .setAvailableProviders(Arrays.asList(
 //                                    new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                                    new AuthUI.IdpConfig.PhoneBuilder().build()
+                                    new AuthUI.IdpConfig.EmailBuilder().build()
                             ))
                             .build(),
                     RC_SIGN_IN);
