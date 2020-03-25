@@ -2,6 +2,7 @@ package capstone.spring20.tscc_mobile;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
@@ -12,7 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,7 +38,6 @@ import capstone.spring20.tscc_mobile.Entity.TrashRequest;
 import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
-import capstone.spring20.tscc_mobile.util.FirebaseJWTUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,11 +54,17 @@ public class RequestActivity extends AppCompatActivity {
     String imageEncoded;
     List<String> imageStringList = new ArrayList<>();
     List<Bitmap> imageList = new ArrayList<>();
-
+    String token;
+    TextView mImageNum;
+    int imageNum = 0;
+    ImageView mImageView;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
+        //get firebase token
+        SharedPreferences sharedPreferences = this.getSharedPreferences("JWT", MODE_PRIVATE);
+        token = sharedPreferences.getString("token", "");
 
         setupBasic();
         setupSpinner();
@@ -66,6 +74,9 @@ public class RequestActivity extends AppCompatActivity {
         if (data != null) {
             image = (Bitmap) data.get("image");
             imageList.add(image);
+            imageNum = 1; //show số lượng image
+            mImageNum.setText("image number:" + imageNum);
+            mImageView.setImageBitmap(image);
         }
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +123,9 @@ public class RequestActivity extends AppCompatActivity {
         try {
             if (requestCode == 1 && resultCode == RESULT_OK && null != data && null != data.getClipData()) {
                 ClipData mClipData = data.getClipData();
-
+                //update image number
+                imageNum += mClipData.getItemCount();
+                mImageNum.setText("image number: " + imageNum);
                 for (int i = 0; i < mClipData.getItemCount(); i++) {
                     Uri uri = mClipData.getItemAt(i).getUri();
                     Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
@@ -130,13 +143,12 @@ public class RequestActivity extends AppCompatActivity {
 
     private void postTrashRequest(TrashRequest trashRequest) {
         TSCCClient client = ApiController.getTsccClient();
-        Call<TrashRequest> call = client.sendTrashRequest(trashRequest);
+        Call<TrashRequest> call = client.sendTrashRequest(token, trashRequest);
         call.enqueue(new Callback<TrashRequest>() {
             @Override
             public void onResponse(Call<TrashRequest> call, Response<TrashRequest> response) {
 
             }
-
             @Override
             public void onFailure(Call<TrashRequest> call, Throwable t) {
             }
@@ -150,6 +162,8 @@ public class RequestActivity extends AppCompatActivity {
         mSubmit = findViewById(R.id.btnSendRequest);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mGallery = findViewById(R.id.btnGallery);
+        mImageNum = findViewById(R.id.txtImageNum);
+        mImageView = findViewById(R.id.imageView);
     }
 
     public void setupSpinner() {
@@ -186,8 +200,7 @@ public class RequestActivity extends AppCompatActivity {
         );
     }
 
-    public String convertBitmapToString(Bitmap bitmap)
-    {
+    public String convertBitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);

@@ -20,7 +20,6 @@ import com.google.firebase.auth.GetTokenResult;
 
 import java.util.Arrays;
 
-import capstone.spring20.tscc_mobile.util.FirebaseJWTUtil;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -31,7 +30,6 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
         //firebase auth
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
@@ -62,8 +60,7 @@ public class WelcomeActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-                //go to detail info activity
-                Intent intent = new Intent(WelcomeActivity.this, DetailInfomationActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 return;
