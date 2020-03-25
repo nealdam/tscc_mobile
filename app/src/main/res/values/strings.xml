@@ -23,4 +23,22 @@
     <string name="notification">Notification</string>
     <string name="full_name">Full name</string>
     <string name="email">Email</string>
+    <string-array name="trashType">
+        <item>ORGANIC</item>
+        <item>RECYCLE</item>
+        <item>OTHER</item>
+    </string-array>
+    <string-array name="trashWidth">
+        <item>SMALL</item>
+        <item>NORMAL</item>
+        <item>MEDIUM</item>
+        <item>BIG</item>
+    </string-array>
+    <string-array name="trashSize">
+        <item>SMALL</item>
+        <item>NORMAL</item>
+        <item>MEDIUM</item>
+        <item>BIG</item>
+    </string-array>
 </resources>
+

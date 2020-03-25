@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_space"
+    tools:context=".RequestActivity">
+
+    <TextView
+        android:id="@+id/tvNewRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/new_request"
+        android:textAlignment="center"
+        android:textSize="@dimen/txt1" />
+
+    <GridView
+        android:id="@+id/gvRequestImageGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/image_grid_height"
+        android:layout_below="@id/tvNewRequest"
+        android:layout_marginTop="@dimen/default_space"
+        android:columnWidth="@dimen/image_grid_item_width"
+        android:numColumns="auto_fit" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRequestType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gvRequestImageGrid"
+        android:layout_marginTop="@dimen/default_space"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:hint="@string/type">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRequestWidth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tilRequestType"
+        android:layout_marginTop="@dimen/default_space"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:hint="@string/width">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRequestSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tilRequestWidth"
+        android:layout_marginTop="@dimen/default_space"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:hint="@string/size">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilRequestLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tilRequestSize"
+        android:layout_marginTop="@dimen/default_space"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:hint="@string/location">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="@dimen/btn4"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tilRequestLocation"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/default_space"
+        android:text="Trạng thái: Đã xử lý"
+        android:textColor="#8BC34A"
+        android:textSize="16sp"
+        android:textStyle="bold" />/>
+
+</RelativeLayout>
