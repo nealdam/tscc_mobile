@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 String token = task.getResult().getToken();
                                 editor.putString("token", token);
+                                editor.commit();
                             } else {
                                 Log.d(TAG, task.getException().getMessage());
                             }

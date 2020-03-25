@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -63,7 +64,6 @@ public class RequestActivity extends AppCompatActivity {
         //get firebase token
         SharedPreferences sharedPreferences = this.getSharedPreferences("JWT", MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
-
         setupBasic();
         setupSpinner();
 
