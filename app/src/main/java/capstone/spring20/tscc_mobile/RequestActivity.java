@@ -146,6 +146,9 @@ public class RequestActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TrashRequest> call, Response<TrashRequest> response) {
                 Toast.makeText(RequestActivity.this, "Send request success", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(RequestActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
             @Override
             public void onFailure(Call<TrashRequest> call, Throwable t) {

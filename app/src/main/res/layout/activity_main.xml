@@ -15,21 +15,21 @@
             android:textSize="@dimen/txt1"
             android:text="@string/trash_collection"/>
 
-        <ImageView
-            android:layout_width="@dimen/logo2"
-            android:layout_height="@dimen/logo2"
-            android:layout_marginTop="@dimen/default_space"
-            android:scaleType="center"
-            android:src="@drawable/ic_launcher_background"
-            android:contentDescription="@string/user_logo"/>
+    <ImageView
+        android:layout_width="@dimen/logo2"
+        android:layout_height="@dimen/logo2"
+        android:layout_marginTop="@dimen/default_space"
+        android:contentDescription="@string/user_logo"
+        android:scaleType="fitCenter"
+        android:src="@drawable/citizen" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_space"
-            android:textAlignment="center"
-            android:textSize="@dimen/txt2"
-            android:text="User name"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_space"
+        android:text="Citizen"
+        android:textAlignment="center"
+        android:textSize="@dimen/txt2" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCamera"
