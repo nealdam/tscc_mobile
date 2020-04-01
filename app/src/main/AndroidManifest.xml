@@ -32,8 +32,8 @@
         <activity android:name=".CaptureImagesActivity" />
         <activity android:name=".CitizenProfileActivity" />
         <activity android:name=".InformationActivity" />
-        <activity android:name=".RequestActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".RequestActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

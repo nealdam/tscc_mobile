@@ -9,11 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +36,7 @@ import capstone.spring20.tscc_mobile.Entity.TrashRequest;
 import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
+import capstone.spring20.tscc_mobile.util.CustomGridAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +56,8 @@ public class RequestActivity extends AppCompatActivity {
     String token;
     TextView mImageNum;
     int imageNum = 0;
-    ImageView mImageView;
+    GridView gridView;
+//    ImageView mImageView1;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +75,8 @@ public class RequestActivity extends AppCompatActivity {
             imageList.add(image);
             imageNum = 1; //show số lượng image
             mImageNum.setText("image number:" + imageNum);
-            mImageView.setImageBitmap(image);
+//            mImageView1.setImageBitmap(image);
+            updateImageUI(imageList); //update gridview show ảnh
         }
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +114,6 @@ public class RequestActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     @Override
@@ -129,6 +130,7 @@ public class RequestActivity extends AppCompatActivity {
                     Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                     imageList.add(img);
                 }
+                updateImageUI(imageList);
             } else {
                 Toast.makeText(this, "You haven't picked any Image",
                         Toast.LENGTH_LONG).show();
@@ -165,7 +167,8 @@ public class RequestActivity extends AppCompatActivity {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mGallery = findViewById(R.id.btnLibrary);
         mImageNum = findViewById(R.id.txtImageNum);
-        mImageView = findViewById(R.id.imageView);
+        gridView = findViewById(R.id.gridview);
+//        mImageView1 = findViewById(R.id.imageView1);
     }
 
     public void setupSpinner() {
@@ -205,5 +208,9 @@ public class RequestActivity extends AppCompatActivity {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+    }
+
+    public void updateImageUI(List<Bitmap> list) {
+        gridView.setAdapter(new CustomGridAdapter(this, list));
     }
 }

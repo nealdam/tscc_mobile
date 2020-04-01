@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
                                 String token = task.getResult().getToken();
+                                token  = "Bearer " + token;
                                 editor.putString("token", token);
                                 editor.commit();
                             } else {
