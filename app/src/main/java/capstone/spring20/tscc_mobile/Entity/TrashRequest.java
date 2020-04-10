@@ -23,9 +23,9 @@ public class TrashRequest {
     @SerializedName("longitude")
     @Expose
     private double longitude;
-    @SerializedName("imageDirectories")
+    @SerializedName("images")
     @Expose
-    public List<String> imageDirectories = new ArrayList<>();
+    public List<String> images = new ArrayList<>();
 
     public String getTrashTypeId() {
         return trashTypeId;
@@ -70,20 +70,20 @@ public class TrashRequest {
         this.longitude = longitude;
     }
 
-    public TrashRequest(String trashTypeId, String trashSizeId, String trashWidthId, double latitude, double longitude, List<String> imageDirectories) {
+    public TrashRequest(String trashTypeId, String trashSizeId, String trashWidthId, double latitude, double longitude, List<String> images) {
         this.trashTypeId = trashTypeId;
         this.trashSizeId = trashSizeId;
         this.trashWidthId = trashWidthId;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.imageDirectories = imageDirectories;
+        this.images = images;
     }
 
-    public List<String> getImageDirectories() {
-        return imageDirectories;
+    public List<String> getImages() {
+        return images;
     }
 
-    public void setImageDirectories(List<String> imageDirectories) {
-        this.imageDirectories = imageDirectories;
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }
