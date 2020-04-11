@@ -8,7 +8,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import capstone.spring20.tscc_mobile.Api.ApiController;
@@ -199,7 +199,8 @@ public class RequestActivity extends AppCompatActivity {
     public String convertBitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+//        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+        return Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }
 
     public void updateImageUI(List<Bitmap> list) {

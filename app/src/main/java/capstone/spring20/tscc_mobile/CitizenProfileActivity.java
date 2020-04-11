@@ -28,7 +28,7 @@ public class CitizenProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+/*
         mName = findViewById(R.id.txtName);
         mRole = findViewById(R.id.txtRole);
         mEmail = findViewById(R.id.txtEmail);
@@ -58,7 +58,7 @@ public class CitizenProfileActivity extends AppCompatActivity {
             public void onFailure(Call<Citizen> call, Throwable t) {
             }
         });
+*/
     }
-
 
 }

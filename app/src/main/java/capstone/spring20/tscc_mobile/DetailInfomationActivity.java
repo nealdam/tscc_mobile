@@ -28,7 +28,7 @@ public class DetailInfomationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_infomation);
-
+/*
         mSubmit = findViewById(R.id.btnSubmit);
         mName = findViewById(R.id.etxtName);
         mPhoneNumber = findViewById(R.id.etxtPhoneNumber);
@@ -67,7 +67,7 @@ public class DetailInfomationActivity extends AppCompatActivity {
                 return;
             }
         });
-
+*/
     }
 
 
