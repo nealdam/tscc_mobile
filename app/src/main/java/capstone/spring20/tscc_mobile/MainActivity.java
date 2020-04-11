@@ -1,20 +1,24 @@
 package capstone.spring20.tscc_mobile;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
@@ -28,6 +32,28 @@ public class MainActivity extends AppCompatActivity {
         setupCameraButton();
 
         getJWTAndSavetoSharedPreference();
+
+        saveCurrentLocation();
+    }
+
+    private void saveCurrentLocation() {
+        SharedPreferences shared = this.getSharedPreferences("Location", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = shared.edit();
+
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                                                                         @Override
+                                                                         public void onComplete(@NonNull Task<Location> task) {
+                                                                             Location location = task.getResult();
+                                                                             if (location != null) {
+                                                                                 editor.putFloat("latitude", (float) location.getLatitude());
+                                                                                 editor.putFloat("longitude", (float) location.getLongitude());
+                                                                                 editor.apply();
+                                                                             }
+                                                                         }
+                                                                     }
+        );
     }
 
     private void setupCameraButton() {
@@ -51,12 +77,10 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
-                                String token = task.getResult().getToken();
-                                token  = "Bearer " + token;
+                                String token = Objects.requireNonNull(task.getResult()).getToken();
+                                token = "Bearer " + token;
                                 editor.putString("token", token);
-                                editor.commit();
-                            } else {
-                                Log.d(TAG, task.getException().getMessage());
+                                editor.apply();
                             }
                         }
                     });

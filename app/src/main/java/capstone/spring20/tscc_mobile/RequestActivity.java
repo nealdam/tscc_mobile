@@ -59,13 +59,12 @@ public class RequestActivity extends AppCompatActivity {
     int imageNum = 0;
     GridView gridView;
 //    ImageView mImageView1;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
-        //get firebase token
-        SharedPreferences sharedPreferences = this.getSharedPreferences("JWT", MODE_PRIVATE);
-        token = sharedPreferences.getString("token", "");
+
         setupBasic();
         setupSpinner();
 
@@ -79,41 +78,6 @@ public class RequestActivity extends AppCompatActivity {
 //            mImageView1.setImageBitmap(image);
             updateImageUI(imageList); //update gridview show ảnh
         }
-
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getLastLocation();
-                String trashType = mType.getSelectedItem().toString();
-                String trashSize = mSize.getSelectedItem().toString();
-                String trashWidth = mWidth.getSelectedItem().toString();
-                if (!imageList.isEmpty()) {
-                    for (Bitmap img : imageList) {
-                        imageEncoded = convertBitmapToString(img);
-                        imageStringList.add(imageEncoded);
-                    }
-                }
-
-                TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType),
-                        TrashSizeConstant.getTrashSizeId(trashSize),
-                        TrashWidthConstant.getTrashWidthId(trashWidth),
-                        myLatitude, myLongitude,
-                        imageStringList);
-                //then send request to api
-                postTrashRequest(trashRequest);
-            }
-        });
-
-        mGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
-            }
-        });
 
     }
 
@@ -164,11 +128,52 @@ public class RequestActivity extends AppCompatActivity {
         mType = findViewById(R.id.spType);
         mSize = findViewById(R.id.spSize);
         mWidth = findViewById(R.id.spWidth);
-        mSubmit = findViewById(R.id.btnSendRequest);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mGallery = findViewById(R.id.btnLibrary);
         mImageNum = findViewById(R.id.txtImageNum);
         gridView = findViewById(R.id.gridview);
+        //get jwt token
+        SharedPreferences jwtSharedPreferences = this.getSharedPreferences("JWT", MODE_PRIVATE);
+        token = jwtSharedPreferences.getString("token", "");
+        //get current location
+        SharedPreferences locationSharedPreferences = this.getSharedPreferences("Location", MODE_PRIVATE);
+        myLatitude = locationSharedPreferences.getFloat("latitude", 0);
+        myLongitude = locationSharedPreferences.getFloat("longitude", 0);
+
+        mSubmit = findViewById(R.id.btnSendRequest);
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String trashType = mType.getSelectedItem().toString();
+                String trashSize = mSize.getSelectedItem().toString();
+                String trashWidth = mWidth.getSelectedItem().toString();
+                if (!imageList.isEmpty()) {
+                    for (Bitmap img : imageList) {
+                        imageEncoded = convertBitmapToString(img);
+                        imageStringList.add(imageEncoded);
+                    }
+                }
+
+                TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType),
+                        TrashSizeConstant.getTrashSizeId(trashSize),
+                        TrashWidthConstant.getTrashWidthId(trashWidth),
+                        myLatitude, myLongitude,
+                        imageStringList);
+                //then send request to api
+                postTrashRequest(trashRequest);
+            }
+        });
+
+        mGallery = findViewById(R.id.btnLibrary);
+        mGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
+            }
+        });
 //        mImageView1 = findViewById(R.id.imageView1);
     }
 
@@ -189,20 +194,6 @@ public class RequestActivity extends AppCompatActivity {
         mType.setAdapter(trashTypeAdapter);
         mSize.setAdapter(trashSizeAdapter);
         mWidth.setAdapter(trashWidthAdapter);
-    }
-
-    private void getLastLocation() {
-        mFusedLocationClient.getLastLocation().addOnCompleteListener( new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        Location location = task.getResult();
-                        if (location != null) {
-                           myLatitude = location.getLatitude();
-                           myLongitude = location.getLongitude();
-                        }
-                    }
-                }
-        );
     }
 
     public String convertBitmapToString(Bitmap bitmap) {
