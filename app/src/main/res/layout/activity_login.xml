@@ -5,31 +5,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/default_space"
-    tools:context=".LoginActivity">
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilPhoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/btnSendPhoneNumber"
-        android:layout_marginEnd="@dimen/default_space"
-        android:hint="@string/phone_number">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSendPhoneNumber"
-        android:layout_width="@dimen/btn5"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@id/tilPhoneNumber"
-        android:layout_alignBottom="@+id/tilPhoneNumber"
-        android:text="@string/send" />
-
-</RelativeLayout>
+    tools:context=".LoginActivity"/>

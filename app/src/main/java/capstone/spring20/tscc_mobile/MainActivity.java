@@ -10,6 +10,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,14 +23,14 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
-    Button mCamera;
+    Button mCamera, mLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupCameraButton();
+        setupBasic();
 
         getJWTAndSavetoSharedPreference();
 
@@ -56,13 +57,32 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void setupCameraButton() {
+    private void setupBasic() {
         mCamera = findViewById(R.id.btnCamera);
+        mLogout = findViewById(R.id.btnLogout);
+
         mCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CaptureImagesActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        mLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                AuthUI.getInstance()
+                        .signOut(MainActivity.this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
             }
         });
     }
