@@ -7,8 +7,8 @@
     <string name="send">Send</string>
     <string name="trash_collection">Trash Collection</string>
     <string name="user_logo">User Logo</string>
-    <string name="use_camera">Use camera</string>
-    <string name="use_album">Use album</string>
+    <string name="use_camera">Chụp ảnh</string>
+    <string name="use_album">Chọn ảnh</string>
     <string name="help">Help</string>
     <string name="type">Type</string>
     <string name="new_request">New request</string>
