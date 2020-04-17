@@ -4,11 +4,9 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,14 +15,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -37,7 +32,6 @@ import capstone.spring20.tscc_mobile.Entity.TrashRequest;
 import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
-import capstone.spring20.tscc_mobile.util.CustomGridAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,8 +69,6 @@ public class RequestActivity extends AppCompatActivity {
             imageList.add(image);
             imageNum = 1; //show số lượng image
             mImageNum.setText("image number:" + imageNum);
-//            mImageView1.setImageBitmap(image);
-            updateImageUI(imageList); //update gridview show ảnh
         }
 
     }
@@ -95,7 +87,6 @@ public class RequestActivity extends AppCompatActivity {
                     Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                     imageList.add(img);
                 }
-                updateImageUI(imageList);
             } else {
                 Toast.makeText(this, "You haven't picked any Image",
                         Toast.LENGTH_LONG).show();
@@ -203,7 +194,4 @@ public class RequestActivity extends AppCompatActivity {
         return Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }
 
-    public void updateImageUI(List<Bitmap> list) {
-        gridView.setAdapter(new CustomGridAdapter(this, list));
-    }
 }

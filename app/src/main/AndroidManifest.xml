@@ -28,12 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".HistoryDetailActivity" />
-        <activity android:name=".NotificationAndHistoryActivity" />
-        <activity android:name=".DetailInfomationActivity" />
         <activity android:name=".CaptureImagesActivity" />
         <activity android:name=".CitizenProfileActivity" />
-        <activity android:name=".InformationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RequestActivity" />
         <activity android:name=".MainActivity" />
