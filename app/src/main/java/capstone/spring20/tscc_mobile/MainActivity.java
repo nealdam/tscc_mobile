@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupBasic() {
         mCamera = findViewById(R.id.btnCamera);
-        mLogout = findViewById(R.id.btnLogout);
+        //mLogout = findViewById(R.id.btnLogout);
 
         mCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mLogout.setOnClickListener(new View.OnClickListener() {
+        /*mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
             }
-        });
+        });*/
     }
 
     private void getJWTAndSavetoSharedPreference() {
