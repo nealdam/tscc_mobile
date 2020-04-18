@@ -120,7 +120,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chọn ảnh từ thư viện ảnh cảu bạn"
+            android:text="Chọn ảnh từ thư viện ảnh của bạn"
             android:textAlignment="center"
             android:textStyle="italic"/>
 
@@ -136,6 +136,7 @@
         android:layout_marginBottom="30dp"
         android:backgroundTint="@color/buttonColor"
         android:src="@drawable/ic_person_white_35dp"
+        style="?android:attr/borderlessButtonStyle"
         android:text="@string/notification" />
 
 </LinearLayout>
