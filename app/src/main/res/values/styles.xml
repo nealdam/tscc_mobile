@@ -8,13 +8,9 @@
         <item name="colorAccent">#1b5e20</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
-
-    <style name="AppTheme.PopupTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowCloseOnTouchOutside">true</item>
-    </style>
-
 </resources>

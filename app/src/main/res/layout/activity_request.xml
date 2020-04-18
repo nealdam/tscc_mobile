@@ -85,7 +85,7 @@
         />
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btnSendRequest"
         android:layout_width="@dimen/btn4"
         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
         android:layout_marginTop="@dimen/default_space"
         android:text="@string/send_request" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btnLibrary"
         android:layout_width="@dimen/btn4"
         android:layout_height="wrap_content"
