@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import android.Manifest;
@@ -24,9 +25,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
 import java.util.Arrays;
+import java.util.List;
 
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
 
     private static final int RC_SIGN_IN = 123;
     private static final String TAG = "WelcomeActivity";
@@ -57,8 +59,14 @@ public class WelcomeActivity extends AppCompatActivity {
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(intent);
+                String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+                if (EasyPermissions.hasPermissions(WelcomeActivity.this, perms)) {
+                    Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    EasyPermissions.requestPermissions(WelcomeActivity.this, "Bạn cần cấp quyền truy cập vị trí.", 123, perms);
+                }
+
             }
         });
 
@@ -79,6 +87,32 @@ public class WelcomeActivity extends AppCompatActivity {
         } else {
             EasyPermissions.requestPermissions(this, "Bạn cần cấp các quyền cần thiết cho ứng dụng.", 123, perms);
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+
+        }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
 }

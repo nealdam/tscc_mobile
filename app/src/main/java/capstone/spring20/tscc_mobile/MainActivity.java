@@ -1,5 +1,6 @@
 package capstone.spring20.tscc_mobile;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -8,7 +9,11 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -19,18 +24,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
+import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
     String TAG = "MainActivity";
-    Button mCamera, mLogout;
+    Button mCamera, mGallery, mLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupBasic();
+        mCamera = findViewById(R.id.btnCamera);
+        mGallery = findViewById ( R.id.btnChooseImg );
+        //mLogout = findViewById(R.id.btnLogout);
+
+        setupBasic ();
 
         getJWTAndSavetoSharedPreference();
 
@@ -57,15 +67,30 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    @AfterPermissionGranted(123)
     private void setupBasic() {
-        mCamera = findViewById(R.id.btnCamera);
-        //mLogout = findViewById(R.id.btnLogout);
-
         mCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CaptureImagesActivity.class);
-                startActivity(intent);
+                String[] perms = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
+                if (EasyPermissions.hasPermissions(MainActivity.this, perms)) {
+                    Intent intent = new Intent(MainActivity.this, CaptureImagesActivity.class);
+                    startActivity(intent);
+                } else {
+                    EasyPermissions.requestPermissions(MainActivity.this, "Bạn cần cấp quyền sử dụng máy ảnh.", 123, perms);
+                }
+            }
+        });
+
+        mGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION};
+                if (EasyPermissions.hasPermissions(MainActivity.this, perms)) {
+                    //add Gallery here
+                } else {
+                    EasyPermissions.requestPermissions(MainActivity.this, "Bạn cần cấp quyền truy cập kho ảnh.", 123, perms);
+                }
             }
         });
 
@@ -107,5 +132,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
 
+        }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
 }
