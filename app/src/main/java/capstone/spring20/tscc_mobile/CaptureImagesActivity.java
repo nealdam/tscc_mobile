@@ -3,6 +3,7 @@ package capstone.spring20.tscc_mobile;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.provider.MediaStore;
 import capstone.spring20.tscc_mobile.Entity.TrashRequest;
 
 public class CaptureImagesActivity extends AppCompatActivity {
-
+//hơm cần thiết nữa nên bỏ
     TrashRequest trashRequest;
 
     @Override
@@ -22,7 +23,7 @@ public class CaptureImagesActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 1);
-
+        //finish ();
 
     }
 
@@ -35,9 +36,17 @@ public class CaptureImagesActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RequestActivity.class);
             intent.putExtra("image", image);
             startActivity(intent);
-            finish();
             return;
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // đặt resultCode là Activity.RESULT_CANCELED thể hiện
+        // đã thất bại khi người dùng click vào nút Back.
+
+        setResult( Activity.RESULT_CANCELED);
+        super.onBackPressed();
     }
 }

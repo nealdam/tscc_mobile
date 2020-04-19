@@ -1,5 +1,6 @@
 package capstone.spring20.tscc_mobile;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +32,7 @@ import java.util.List;
 import capstone.spring20.tscc_mobile.Api.ApiController;
 import capstone.spring20.tscc_mobile.Api.TSCCClient;
 import capstone.spring20.tscc_mobile.Entity.TrashRequest;
+import capstone.spring20.tscc_mobile.adapter.ImageAdapter;
 import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
@@ -40,7 +44,7 @@ public class RequestActivity extends AppCompatActivity {
     String TAG = "RequestActivity";
 
     Spinner mType, mWidth, mSize;
-    Button mSubmit, mGallery;
+    Button mSubmit, mGallery, btnBack;
     FusedLocationProviderClient mFusedLocationClient;
     double myLatitude;
     double myLongitude;
@@ -67,7 +71,7 @@ public class RequestActivity extends AppCompatActivity {
         if (data != null) {
             image = (Bitmap) data.get("image");
             imageList.add(image);
-            imageNum = 1; //show số lượng image
+            imageNum = imageList.size (); //show số lượng image
             mImageNum.setText("image number:" + imageNum);
         }
 
@@ -87,6 +91,8 @@ public class RequestActivity extends AppCompatActivity {
                     Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                     imageList.add(img);
                 }
+                gridView = findViewById(R.id.gridview);
+                gridView.setAdapter ( new ImageAdapter ( this, imageList ) );
             } else {
                 Toast.makeText(this, "You haven't picked any Image",
                         Toast.LENGTH_LONG).show();
@@ -121,7 +127,18 @@ public class RequestActivity extends AppCompatActivity {
         mWidth = findViewById(R.id.spWidth);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mImageNum = findViewById(R.id.txtImageNum);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RequestActivity.this.onBackPressed();
+            }
+        });
+
+        //set img array
         gridView = findViewById(R.id.gridview);
+        gridView.setAdapter ( new ImageAdapter ( this, imageList ) );
+
         //get jwt token
         SharedPreferences jwtSharedPreferences = this.getSharedPreferences("JWT", MODE_PRIVATE);
         token = jwtSharedPreferences.getString("token", "");
@@ -194,4 +211,11 @@ public class RequestActivity extends AppCompatActivity {
         return Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }
 
+    @Override
+    public void onBackPressed() {
+        // đặt resultCode là Activity.RESULT_CANCELED thể hiện
+        // đã thất bại khi người dùng click vào nút Back.
+        setResult( Activity.RESULT_CANCELED);
+        super.onBackPressed();
+    }
 }

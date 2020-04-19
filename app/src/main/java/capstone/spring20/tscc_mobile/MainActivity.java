@@ -3,8 +3,10 @@ package capstone.spring20.tscc_mobile;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 
@@ -74,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             public void onClick(View v) {
                 String[] perms = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
                 if (EasyPermissions.hasPermissions(MainActivity.this, perms)) {
-                    Intent intent = new Intent(MainActivity.this, CaptureImagesActivity.class);
-                    startActivity(intent);
+                    Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 1);
                 } else {
                     EasyPermissions.requestPermissions(MainActivity.this, "Bạn cần cấp quyền sử dụng máy ảnh.", 123, perms);
                 }
@@ -136,6 +138,16 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+
+        }
+        //camera
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+
+            Intent intent = new Intent(this, RequestActivity.class);
+            intent.putExtra("image", image);
+            startActivity(intent);
+            return;
 
         }
     }
