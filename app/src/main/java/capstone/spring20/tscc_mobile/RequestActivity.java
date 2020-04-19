@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -80,21 +82,49 @@ public class RequestActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         try {
-            if (requestCode == 1 && resultCode == RESULT_OK && null != data && null != data.getClipData()) {
-                ClipData mClipData = data.getClipData();
-                //update image number
-                imageNum += mClipData.getItemCount();
-                mImageNum.setText("image number: " + imageNum);
-                for (int i = 0; i < mClipData.getItemCount(); i++) {
-                    Uri uri = mClipData.getItemAt(i).getUri();
-                    Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    imageList.add(img);
+
+
+            if (requestCode == 1 && resultCode == RESULT_OK && null != data) {
+                // Get the Image from data
+
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                // When an Image is picked
+                if(data.getData()!=null){
+                    imageNum += 1;
+                    mImageNum.setText("image number: " + imageNum);
+                    Uri mImageUri=data.getData();
+                    imageEncoded = mImageUri.getPath();
+
+                    //BitmapFactory.Options options = new BitmapFactory.Options ();
+                    //Bitmap img = BitmapFactory.decodeFile ( imageEncoded, options );
+
+                    Bitmap img = MediaStore.Images.Media.getBitmap ( this.getContentResolver () ,mImageUri );
+                    imageList.add ( img );
+                    gridView = findViewById(R.id.gridview);
+                    gridView.setAdapter ( new ImageAdapter ( this, imageList ) );
+                } else {
+                    // multi images
+                    if (null != data.getClipData()) {
+                        ClipData mClipData = data.getClipData();
+                        //update image number
+                        imageNum += mClipData.getItemCount();
+                        mImageNum.setText("image number: " + imageNum);
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+                            Uri uri = mClipData.getItemAt(i).getUri();
+                            Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                            imageList.add(img);
+                        }
+                        gridView = findViewById(R.id.gridview);
+                        gridView.setAdapter ( new ImageAdapter ( this, imageList ) );
+                    } else {
+                        Toast.makeText(this, "You haven't picked any Image",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
-                gridView = findViewById(R.id.gridview);
-                gridView.setAdapter ( new ImageAdapter ( this, imageList ) );
             } else {
-                Toast.makeText(this, "You haven't picked any Image",
+                Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
             }
 

@@ -45,4 +45,8 @@ public class ImageAdapter extends BaseAdapter {
 
         return imageView;
     }
+
+    public void removeImage(int position) {
+        imageArray.remove ( position );
+    }
 }
