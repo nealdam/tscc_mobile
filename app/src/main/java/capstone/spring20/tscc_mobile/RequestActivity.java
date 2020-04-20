@@ -2,12 +2,9 @@ package capstone.spring20.tscc_mobile;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,16 +12,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -37,21 +33,15 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import capstone.spring20.tscc_mobile.Api.ApiController;
 import capstone.spring20.tscc_mobile.Api.TSCCClient;
 import capstone.spring20.tscc_mobile.Entity.TrashRequest;
-import capstone.spring20.tscc_mobile.adapter.ImageAdapter;
 import capstone.spring20.tscc_mobile.adapter.PhotoAdapter;
 import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
 import gun0912.tedbottompicker.TedBottomPicker;
 import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -334,4 +324,5 @@ public class RequestActivity extends AppCompatActivity{
         setResult( Activity.RESULT_CANCELED);
         super.onBackPressed();
     }
+
 }
