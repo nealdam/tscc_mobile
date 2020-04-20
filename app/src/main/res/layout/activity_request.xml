@@ -64,7 +64,7 @@
         android:layout_weight="3.3"
         android:background="@color/gray"
         android:layout_margin="10dp">
-
+<!--
         <GridView
             android:id="@+id/gridview"
             android:layout_width="match_parent"
@@ -76,7 +76,13 @@
             android:stretchMode="columnWidth"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"/>
-        <!--android:columnWidth=""-->
+-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
 
     </LinearLayout>
 

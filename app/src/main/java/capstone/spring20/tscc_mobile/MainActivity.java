@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             public void onClick(View v) {
                 String[] perms = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
                 if (EasyPermissions.hasPermissions(MainActivity.this, perms)) {
-                    Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent intent = new Intent( MainActivity.this, RequestActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
                     EasyPermissions.requestPermissions(MainActivity.this, "Bạn cần cấp quyền sử dụng máy ảnh.", 123, perms);
@@ -167,6 +167,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, MainActivity.this);
     }
 }
