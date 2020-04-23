@@ -44,12 +44,12 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //check all textedit not empty
                 if (!checkEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "All field must not empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Xin điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //check password match
                 if (!mPass.getText().toString().equals(mPassConfirm.getText().toString())) {
-                    Toast.makeText(RegisterActivity.this, "Password confirm isn't match", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Mật khẩu và mật khẩu nhập lại không khớp, xin thử lại", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //submit
@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(Call<String> call, Response<String> response) {
                         String result = response.body();
                         if (!result.equals("success")) {
-                            Toast.makeText(RegisterActivity.this, "Register fail", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(RegisterActivity.this, "Register fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

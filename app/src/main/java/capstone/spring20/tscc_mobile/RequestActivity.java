@@ -81,7 +81,7 @@ public class RequestActivity extends AppCompatActivity{
             image = (Bitmap) data.get("image");
             imageList.add(image);
             imageNum = imageList.size (); //show số lượng image
-            mImageNum.setText("image number:" + imageNum);
+            mImageNum.setText("Số ảnh đã chọn:" + imageNum);
         }
 
     }
@@ -284,7 +284,7 @@ public class RequestActivity extends AppCompatActivity{
                     public void onImagesSelected(List<Uri> uriList) {
                         // here is selected image uri list
                         selectedListUri = uriList;
-                        mImageNum.setText ( "Numbers: " + selectedListUri.size () );
+                        mImageNum.setText ( "Số ảnh đã chọn: " + selectedListUri.size () );
                         photoAdapter.setPhotos ( uriList );
                     }
                 });
