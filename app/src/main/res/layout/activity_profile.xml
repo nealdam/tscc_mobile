@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".CitizenProfileActivity"
+    android:orientation="vertical">
 
-    tools:context=".CitizenProfileActivity">
-
-    <TextView
-        android:id="@+id/txtRole"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_x="183dp"
-        android:layout_y="201dp"
-        android:text="Người dân"
-        tools:layout_editor_absoluteX="184dp"
-        tools:layout_editor_absoluteY="193dp" />
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
 
-    <ImageView
-        android:id="@+id/ivAvatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="143dp"
-        android:layout_y="57dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="141dp"
-        tools:layout_editor_absoluteY="52dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="141dp"
+            tools:layout_editor_absoluteY="52dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/txtRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Người dân"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="56dp"
-        android:layout_y="256dp"
         android:text="Tên:"
         android:textStyle="bold" />
 
@@ -50,8 +51,6 @@
         android:id="@+id/txtEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="56dp"
-        android:layout_y="348dp"
         android:text="van@email.com" />
 
     <TextView
@@ -66,8 +65,6 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="56dp"
-        android:layout_y="319dp"
         android:text="Email:"
         android:textStyle="bold" />
 
@@ -84,7 +81,5 @@
         android:id="@+id/btnlogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="54dp"
-        android:layout_y="470dp"
         android:text="Đăng xuất" />
-</AbsoluteLayout>
+</LinearLayout>

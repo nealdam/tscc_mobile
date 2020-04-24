@@ -25,6 +25,7 @@
     <string name="email">Email</string>
     <string name="password">Mật khẩu</string>
     <string name="confirm_password">Nhập lại mật khẩu</string>
+    <string name="loading">Loading</string>
     <string-array name="trashType">
         <item>ORGANIC</item>
         <item>RECYCLE</item>
