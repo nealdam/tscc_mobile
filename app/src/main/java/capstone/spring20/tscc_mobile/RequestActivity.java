@@ -146,7 +146,7 @@ public class RequestActivity extends AppCompatActivity{
         call.enqueue(new Callback<TrashRequest>() {
             @Override
             public void onResponse(Call<TrashRequest> call, Response<TrashRequest> response) {
-                Toast.makeText(RequestActivity.this, "Send request success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RequestActivity.this, "Gửi yêu cầu thành công", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RequestActivity.this, MainActivity.class);
 
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -156,7 +156,7 @@ public class RequestActivity extends AppCompatActivity{
             }
             @Override
             public void onFailure(Call<TrashRequest> call, Throwable t) {
-                Toast.makeText(RequestActivity.this, "Send request fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RequestActivity.this, "Đã có lỗi xảy ra, gửi yêu cầu thất bại", Toast.LENGTH_SHORT).show();
 
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 loadingDialog.dismissDialog ();
