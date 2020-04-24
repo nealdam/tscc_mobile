@@ -1,17 +1,17 @@
 package capstone.spring20.tscc_mobile;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import capstone.spring20.tscc_mobile.Api.ApiController;
 import capstone.spring20.tscc_mobile.Api.TSCCClient;
+import capstone.spring20.tscc_mobile.Entity.Citizen;
 import capstone.spring20.tscc_mobile.Entity.CitizenRequest;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,12 +44,12 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //check all textedit not empty
                 if (!checkEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "All field must not empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Xin điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //check password match
                 if (!mPass.getText().toString().equals(mPassConfirm.getText().toString())) {
-                    Toast.makeText(RegisterActivity.this, "Password confirm isn't match", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Mật khẩu và mật khẩu nhập lại không khớp, xin thử lại", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //submit
@@ -60,13 +60,13 @@ public class RegisterActivity extends AppCompatActivity {
                 citizen.setPassword(mPass.getText().toString());
 
                 TSCCClient client = ApiController.getTsccClient();
-                Call<String> call = client.register(citizen);
-                call.enqueue(new Callback<String>() {
+                Call<Citizen> call = client.register(citizen);
+                call.enqueue(new Callback<Citizen>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        String result = response.body();
-                        if (!result.equals("success")) {
-                            Toast.makeText(RegisterActivity.this, "Register fail", Toast.LENGTH_SHORT).show();
+                    public void onResponse(Call<Citizen> call, Response<Citizen> response) {
+                        int code = response.code();
+                        if (code != 200) {
+                            Toast.makeText(RegisterActivity.this, "Đăng ký thất bại, email đã tồn tại hoặc mật khẩu không đủ mạnh", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
@@ -74,8 +74,8 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(RegisterActivity.this, "Register fail", Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<Citizen> call, Throwable t) {
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

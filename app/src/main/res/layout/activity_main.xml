@@ -103,20 +103,6 @@
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"/>
 
-        <Button
-            android:id="@+id/btnChooseImg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_space"
-            android:text="@string/use_album"
-            android:textColor="@color/white"
-            android:textSize="@dimen/txt2_5"
-            android:textStyle="bold"
-            android:background="@drawable/button_custom"
-            android:drawableLeft="@drawable/ic_collections_white_50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"/>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

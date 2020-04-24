@@ -1,6 +1,7 @@
 package capstone.spring20.tscc_mobile;
 
-import android.content.ClipData;
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -16,12 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -29,18 +37,22 @@ import java.util.List;
 import capstone.spring20.tscc_mobile.Api.ApiController;
 import capstone.spring20.tscc_mobile.Api.TSCCClient;
 import capstone.spring20.tscc_mobile.Entity.TrashRequest;
+import capstone.spring20.tscc_mobile.adapter.PhotoAdapter;
 import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
+import capstone.spring20.tscc_mobile.dialog_custom.LoadingDialog;
+import gun0912.tedbottompicker.TedBottomPicker;
+import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RequestActivity extends AppCompatActivity {
+public class RequestActivity extends AppCompatActivity{
     String TAG = "RequestActivity";
 
     Spinner mType, mWidth, mSize;
-    Button mSubmit, mGallery;
+    Button mSubmit, mGallery, btnBack;
     FusedLocationProviderClient mFusedLocationClient;
     double myLatitude;
     double myLongitude;
@@ -53,6 +65,10 @@ public class RequestActivity extends AppCompatActivity {
     int imageNum = 0;
     GridView gridView;
 //    ImageView mImageView1;
+    RecyclerView rcvPhoto;
+    PhotoAdapter photoAdapter;
+    List<Uri> selectedListUri;
+    LoadingDialog loadingDialog = null;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -67,8 +83,8 @@ public class RequestActivity extends AppCompatActivity {
         if (data != null) {
             image = (Bitmap) data.get("image");
             imageList.add(image);
-            imageNum = 1; //show số lượng image
-            mImageNum.setText("image number:" + imageNum);
+            imageNum = imageList.size (); //show số lượng image
+            mImageNum.setText("Số ảnh đã chọn:" + imageNum);
         }
 
     }
@@ -76,25 +92,52 @@ public class RequestActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        try {
-            if (requestCode == 1 && resultCode == RESULT_OK && null != data && null != data.getClipData()) {
-                ClipData mClipData = data.getClipData();
-                //update image number
-                imageNum += mClipData.getItemCount();
-                mImageNum.setText("image number: " + imageNum);
-                for (int i = 0; i < mClipData.getItemCount(); i++) {
-                    Uri uri = mClipData.getItemAt(i).getUri();
-                    Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    imageList.add(img);
+
+        /*try {
+            if (requestCode == 1 && resultCode == RESULT_OK && null != data) {
+                // Get the Image from data
+
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                // When an Image is picked
+                if(data.getData()!=null){
+                    imageNum += 1;
+                    mImageNum.setText("image number: " + imageNum);
+                    Uri mImageUri=data.getData();
+                    imageEncoded = mImageUri.getPath();
+
+                    //BitmapFactory.Options options = new BitmapFactory.Options ();
+                    //Bitmap img = BitmapFactory.decodeFile ( imageEncoded, options );
+
+                    Bitmap img = MediaStore.Images.Media.getBitmap ( this.getContentResolver () ,mImageUri );
+                    imageList.add ( img );
+                    gridView = findViewById(R.id.gridview);
+                    gridView.setAdapter ( new ImageAdapter ( this, imageList ) );
+                } else {
+                    // multi images
+                    if (null != data.getClipData()) {
+                        ClipData mClipData = data.getClipData();
+                        //update image number
+                        imageNum += mClipData.getItemCount();
+                        mImageNum.setText("image number: " + imageNum);
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+                            Uri uri = mClipData.getItemAt(i).getUri();
+                            Bitmap img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                            imageList.add(img);
+                        }
+                        gridView = findViewById(R.id.gridview);
+                        gridView.setAdapter ( new ImageAdapter ( this, imageList ) );
+                    } else {
+                        Toast.makeText(this, "You haven't picked any Image",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
             } else {
-                Toast.makeText(this, "You haven't picked any Image",
+                Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
             }
-
         } catch (Exception e) {
             Toast.makeText(this, "st wrong", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     private void postTrashRequest(TrashRequest trashRequest) {
@@ -105,23 +148,38 @@ public class RequestActivity extends AppCompatActivity {
             public void onResponse(Call<TrashRequest> call, Response<TrashRequest> response) {
                 Toast.makeText(RequestActivity.this, "Send request success", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RequestActivity.this, MainActivity.class);
+
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                loadingDialog.dismissDialog ();
                 startActivity(intent);
                 finish();
             }
             @Override
             public void onFailure(Call<TrashRequest> call, Throwable t) {
                 Toast.makeText(RequestActivity.this, "Send request fail", Toast.LENGTH_SHORT).show();
+
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                loadingDialog.dismissDialog ();
+                Intent intent = new Intent(RequestActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    public void setupBasic(){
+    private void setupBasic(){
         mType = findViewById(R.id.spType);
         mSize = findViewById(R.id.spSize);
         mWidth = findViewById(R.id.spWidth);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mImageNum = findViewById(R.id.txtImageNum);
-        gridView = findViewById(R.id.gridview);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RequestActivity.this.onBackPressed();
+            }
+        });
+
         //get jwt token
         SharedPreferences jwtSharedPreferences = this.getSharedPreferences("JWT", MODE_PRIVATE);
         token = jwtSharedPreferences.getString("token", "");
@@ -129,46 +187,113 @@ public class RequestActivity extends AppCompatActivity {
         SharedPreferences locationSharedPreferences = this.getSharedPreferences("Location", MODE_PRIVATE);
         myLatitude = locationSharedPreferences.getFloat("latitude", 0);
         myLongitude = locationSharedPreferences.getFloat("longitude", 0);
+        loadingDialog = new LoadingDialog ( RequestActivity.this );
 
         mSubmit = findViewById(R.id.btnSendRequest);
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String trashType = mType.getSelectedItem().toString();
-                String trashSize = mSize.getSelectedItem().toString();
-                String trashWidth = mWidth.getSelectedItem().toString();
-                if (!imageList.isEmpty()) {
+                getWindow ().setFlags ( WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE );
+                loadingDialog.startLoadingDialog ();
+                if (selectedListUri == null || selectedListUri.isEmpty ()) {
+                    //Toast.makeText ( RequestActivity.this, "Bạn cần cung cấp hình ảnh!", Toast.LENGTH_LONG ).show ();
+                    new AlertDialog.Builder(RequestActivity.this)
+                            .setTitle("Không thể gửi yêu cầu")
+                            .setMessage("Bạn cần cung cấp hình ảnh để chúng tôi có thể xác nhận thông tin!")
+                            .setNegativeButton(android.R.string.ok, null)
+                            .setIcon(R.drawable.ic_error_50)
+                            .show();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    loadingDialog.dismissDialog ();
+                } else {
+                    String trashType = mType.getSelectedItem().toString();
+                    String trashSize = mSize.getSelectedItem().toString();
+                    String trashWidth = mWidth.getSelectedItem().toString();
+                    for (Uri uri: selectedListUri) {
+                        try {
+                            imageList.add ( MediaStore.Images.Media.getBitmap(RequestActivity.this.getContentResolver(), uri));
+                        } catch (IOException e) {
+                            e.printStackTrace ();
+                        }
+                    }
                     for (Bitmap img : imageList) {
                         imageEncoded = convertBitmapToString(img);
                         imageStringList.add(imageEncoded);
                     }
+                    TrashRequest trashRequest = new TrashRequest ( TrashTypeConstant.getTrashTypeId ( trashType ),
+                            TrashSizeConstant.getTrashSizeId ( trashSize ),
+                            TrashWidthConstant.getTrashWidthId ( trashWidth ),
+                            myLatitude, myLongitude,
+                            imageStringList );
+                    //then send request to api
+                    postTrashRequest ( trashRequest );
                 }
-
-                TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType),
-                        TrashSizeConstant.getTrashSizeId(trashSize),
-                        TrashWidthConstant.getTrashWidthId(trashWidth),
-                        myLatitude, myLongitude,
-                        imageStringList);
-                //then send request to api
-                postTrashRequest(trashRequest);
             }
         });
 
         mGallery = findViewById(R.id.btnLibrary);
+        rcvPhoto = findViewById ( R.id.rcv_photo );
+
+        photoAdapter = new PhotoAdapter ( this );
+        GridLayoutManager gridLayoutManager = new GridLayoutManager ( this, 3,
+                GridLayoutManager.VERTICAL, false );
+        rcvPhoto.setLayoutManager ( gridLayoutManager );
+        rcvPhoto.setFocusable ( false );
+        rcvPhoto.setAdapter ( photoAdapter );
+
         mGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                /*Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);
+                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 1);*/
+
+                selectImages();
             }
         });
 //        mImageView1 = findViewById(R.id.imageView1);
     }
 
-    public void setupSpinner() {
+    private void selectImages () {
+        PermissionListener permissionListener = new PermissionListener () {
+            @Override
+            public void onPermissionGranted() {
+                openBottomPicker();
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText ( RequestActivity.this,"Permission Denied", Toast.LENGTH_SHORT ).show ();
+            }
+        };
+        TedPermission.with ( this )
+                .setPermissionListener ( permissionListener )
+                .setPermissions ( Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check ();
+    }
+
+    private void openBottomPicker() {
+        TedBottomPicker.with(RequestActivity.this)
+                //.setPeekHeight(1600)
+                .showTitle(false)
+                .setCompleteButtonText("Done")
+                .setEmptySelectionText("No Select")
+                .setSelectedUriList ( selectedListUri )
+                .showMultiImage(new TedBottomSheetDialogFragment.OnMultiImageSelectedListener() {
+                    @Override
+                    public void onImagesSelected(List<Uri> uriList) {
+                        // here is selected image uri list
+                        selectedListUri = uriList;
+                        mImageNum.setText ( "Số ảnh đã chọn: " + selectedListUri.size () );
+                        photoAdapter.setPhotos ( uriList );
+                    }
+                });
+
+    }
+
+    private void setupSpinner() {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> trashTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.trashType, android.R.layout.simple_spinner_item);
@@ -187,11 +312,19 @@ public class RequestActivity extends AppCompatActivity {
         mWidth.setAdapter(trashWidthAdapter);
     }
 
-    public String convertBitmapToString(Bitmap bitmap) {
+    private String convertBitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
 //        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
         return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+    }
+
+    @Override
+    public void onBackPressed() {
+        // đặt resultCode là Activity.RESULT_CANCELED thể hiện
+        // đã thất bại khi người dùng click vào nút Back.
+        setResult( Activity.RESULT_CANCELED);
+        super.onBackPressed();
     }
 
 }

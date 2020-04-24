@@ -7,59 +7,31 @@ public class Citizen {
 
     @SerializedName("id")
     @Expose
-    private String id;
-    @SerializedName("avatar")
+    private int id;
+    @SerializedName("name")
     @Expose
-    private String avatar;
-    @SerializedName("identityCode")
-    @Expose
-    private String identityCode;
-    @SerializedName("userName")
-    @Expose
-    private String userName;
+    private String name;
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("fullName")
+    @SerializedName("phone")
     @Expose
-    private String fullName;
-    @SerializedName("phoneNumber")
-    @Expose
-    private String phoneNumber;
-    @SerializedName("isActive")
-    @Expose
-    private Boolean isActive;
+    private String phone;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getName() {
+        return name;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getIdentityCode() {
-        return identityCode;
-    }
-
-    public void setIdentityCode(String identityCode) {
-        this.identityCode = identityCode;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -70,28 +42,11 @@ public class Citizen {
         this.email = email;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
 }
