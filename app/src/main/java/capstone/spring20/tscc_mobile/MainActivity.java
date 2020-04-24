@@ -31,7 +31,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
     String TAG = "MainActivity";
-    Button mCamera, mGallery;
+    Button mCamera;
     FloatingActionButton mProfile;
 
     @Override
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         setContentView(R.layout.activity_main);
 
         mCamera = findViewById(R.id.btnCamera);
-        mGallery = findViewById ( R.id.btnChooseImg );
         mProfile = findViewById(R.id.btnProfile);
 
         setupBasic ();
@@ -84,19 +83,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
             }
         });
-
-        mGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION};
-                if (EasyPermissions.hasPermissions(MainActivity.this, perms)) {
-                    //add Gallery here
-                } else {
-                    EasyPermissions.requestPermissions(MainActivity.this, "Bạn cần cấp quyền truy cập kho ảnh.", 123, perms);
-                }
-            }
-        });
-
+        
         mProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
