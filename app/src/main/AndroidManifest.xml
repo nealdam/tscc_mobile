@@ -29,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".CaptureImagesActivity" />
         <activity android:name=".CitizenProfileActivity" />
         <activity android:name=".LoginActivity" />

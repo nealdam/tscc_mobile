@@ -79,4 +79,12 @@
         android:layout_y="391dp"
         android:text="Số điện thoại:"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnlogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="54dp"
+        android:layout_y="470dp"
+        android:text="Đăng xuất" />
 </AbsoluteLayout>

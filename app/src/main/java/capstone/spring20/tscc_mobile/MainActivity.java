@@ -6,22 +6,18 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
@@ -29,9 +25,14 @@ import com.google.firebase.auth.GetTokenResult;
 import java.util.List;
 import java.util.Objects;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
     String TAG = "MainActivity";
-    Button mCamera, mGallery, mLogout;
+    Button mCamera, mGallery;
+    FloatingActionButton mProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         mCamera = findViewById(R.id.btnCamera);
         mGallery = findViewById ( R.id.btnChooseImg );
-        //mLogout = findViewById(R.id.btnLogout);
+        mProfile = findViewById(R.id.btnProfile);
 
         setupBasic ();
 
@@ -96,6 +97,13 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             }
         });
 
+        mProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CitizenProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         /*mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
