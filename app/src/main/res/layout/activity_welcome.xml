@@ -13,9 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/llWelcomeButton"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="-2dp"
+        android:layout_marginBottom="12dp"
         android:contentDescription="@string/welcome_logo"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background" />
+        android:src="@drawable/welcome_logo" />
 
     <LinearLayout
         android:id="@+id/llWelcomeButton"
