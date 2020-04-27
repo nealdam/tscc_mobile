@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,9 +43,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         getJWTAndSavetoSharedPreference();
 
-        saveCurrentLocation();
+//        saveCurrentLocation();
     }
-
+/*
     private void saveCurrentLocation() {
         SharedPreferences shared = this.getSharedPreferences("Location", MODE_PRIVATE);
         final SharedPreferences.Editor editor = shared.edit();
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                                                      }
         );
     }
-
+*/
     @AfterPermissionGranted(123)
     private void setupBasic() {
         mCamera.setOnClickListener(new View.OnClickListener() {

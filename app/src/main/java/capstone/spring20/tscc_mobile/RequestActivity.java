@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -48,7 +53,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RequestActivity extends AppCompatActivity{
+public class RequestActivity extends AppCompatActivity {
     String TAG = "RequestActivity";
 
     Spinner mType, mWidth, mSize;
@@ -64,7 +69,7 @@ public class RequestActivity extends AppCompatActivity{
     TextView mImageNum;
     int imageNum = 0;
     GridView gridView;
-//    ImageView mImageView1;
+    //    ImageView mImageView1;
     RecyclerView rcvPhoto;
     PhotoAdapter photoAdapter;
     List<Uri> selectedListUri;
@@ -83,7 +88,7 @@ public class RequestActivity extends AppCompatActivity{
         if (data != null) {
             image = (Bitmap) data.get("image");
             imageList.add(image);
-            imageNum = imageList.size (); //show số lượng image
+            imageNum = imageList.size(); //show số lượng image
             mImageNum.setText("Số ảnh đã chọn:" + imageNum);
         }
 
@@ -150,23 +155,24 @@ public class RequestActivity extends AppCompatActivity{
                 Intent intent = new Intent(RequestActivity.this, MainActivity.class);
 
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                loadingDialog.dismissDialog ();
-                startActivity(intent);
+                loadingDialog.dismissDialog();
+//                startActivity(intent);
                 finish();
             }
+
             @Override
             public void onFailure(Call<TrashRequest> call, Throwable t) {
                 Toast.makeText(RequestActivity.this, "Đã có lỗi xảy ra, gửi yêu cầu thất bại", Toast.LENGTH_SHORT).show();
 
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                loadingDialog.dismissDialog ();
+                loadingDialog.dismissDialog();
                 Intent intent = new Intent(RequestActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    private void setupBasic(){
+    private void setupBasic() {
         mType = findViewById(R.id.spType);
         mSize = findViewById(R.id.spSize);
         mWidth = findViewById(R.id.spWidth);
@@ -183,19 +189,21 @@ public class RequestActivity extends AppCompatActivity{
         //get jwt token
         SharedPreferences jwtSharedPreferences = this.getSharedPreferences("JWT", MODE_PRIVATE);
         token = jwtSharedPreferences.getString("token", "");
+        /*
         //get current location
         SharedPreferences locationSharedPreferences = this.getSharedPreferences("Location", MODE_PRIVATE);
         myLatitude = locationSharedPreferences.getFloat("latitude", 0);
         myLongitude = locationSharedPreferences.getFloat("longitude", 0);
-        loadingDialog = new LoadingDialog ( RequestActivity.this );
+         */
+        loadingDialog = new LoadingDialog(RequestActivity.this);
 
         mSubmit = findViewById(R.id.btnSendRequest);
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getWindow ().setFlags ( WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE );
-                loadingDialog.startLoadingDialog ();
-                if (selectedListUri == null || selectedListUri.isEmpty ()) {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                loadingDialog.startLoadingDialog();
+                if (selectedListUri == null || selectedListUri.isEmpty()) {
                     //Toast.makeText ( RequestActivity.this, "Bạn cần cung cấp hình ảnh!", Toast.LENGTH_LONG ).show ();
                     new AlertDialog.Builder(RequestActivity.this)
                             .setTitle("Không thể gửi yêu cầu")
@@ -204,42 +212,56 @@ public class RequestActivity extends AppCompatActivity{
                             .setIcon(R.drawable.ic_error_50)
                             .show();
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    loadingDialog.dismissDialog ();
+                    loadingDialog.dismissDialog();
                 } else {
-                    String trashType = mType.getSelectedItem().toString();
-                    String trashSize = mSize.getSelectedItem().toString();
-                    String trashWidth = mWidth.getSelectedItem().toString();
-                    for (Uri uri: selectedListUri) {
+                    final String trashType = mType.getSelectedItem().toString();
+                    final String trashSize = mSize.getSelectedItem().toString();
+                    final String trashWidth = mWidth.getSelectedItem().toString();
+                    for (Uri uri : selectedListUri) {
                         try {
-                            imageList.add ( MediaStore.Images.Media.getBitmap(RequestActivity.this.getContentResolver(), uri));
+                            imageList.add(MediaStore.Images.Media.getBitmap(RequestActivity.this.getContentResolver(), uri));
                         } catch (IOException e) {
-                            e.printStackTrace ();
+                            e.printStackTrace();
                         }
                     }
                     for (Bitmap img : imageList) {
                         imageEncoded = convertBitmapToString(img);
                         imageStringList.add(imageEncoded);
                     }
-                    TrashRequest trashRequest = new TrashRequest ( TrashTypeConstant.getTrashTypeId ( trashType ),
-                            TrashSizeConstant.getTrashSizeId ( trashSize ),
-                            TrashWidthConstant.getTrashWidthId ( trashWidth ),
-                            myLatitude, myLongitude,
-                            imageStringList );
-                    //then send request to api
-                    postTrashRequest ( trashRequest );
+                    //then get current location and send request to api
+                    FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(RequestActivity.this);
+                    mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                                                                                     @Override
+                                                                                     public void onComplete(@NonNull Task<Location> task) {
+                                                                                         Location location = task.getResult();
+                                                                                         if (location != null) {
+                                                                                             Log.d(TAG, "onComplete get loca: " + location.getLatitude() + ", " + location.getLongitude());
+                                                                                             TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType),
+                                                                                                     TrashSizeConstant.getTrashSizeId(trashSize),
+                                                                                                     TrashWidthConstant.getTrashWidthId(trashWidth),
+                                                                                                     location.getLatitude(), location.getLongitude(),
+                                                                                                     imageStringList);
+                                                                                             postTrashRequest(trashRequest);
+                                                                                         } else {
+                                                                                             Toast.makeText(RequestActivity.this, "Gửi yêu cầu thất bại, không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
+                                                                                         }
+                                                                                     }
+                                                                                 }
+                    );
+
                 }
             }
         });
 
         mGallery = findViewById(R.id.btnLibrary);
-        rcvPhoto = findViewById ( R.id.rcv_photo );
+        rcvPhoto = findViewById(R.id.rcv_photo);
 
-        photoAdapter = new PhotoAdapter ( this );
-        GridLayoutManager gridLayoutManager = new GridLayoutManager ( this, 3,
-                GridLayoutManager.VERTICAL, false );
-        rcvPhoto.setLayoutManager ( gridLayoutManager );
-        rcvPhoto.setFocusable ( false );
-        rcvPhoto.setAdapter ( photoAdapter );
+        photoAdapter = new PhotoAdapter(this);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3,
+                GridLayoutManager.VERTICAL, false);
+        rcvPhoto.setLayoutManager(gridLayoutManager);
+        rcvPhoto.setFocusable(false);
+        rcvPhoto.setAdapter(photoAdapter);
 
         mGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,8 +278,8 @@ public class RequestActivity extends AppCompatActivity{
 //        mImageView1 = findViewById(R.id.imageView1);
     }
 
-    private void selectImages () {
-        PermissionListener permissionListener = new PermissionListener () {
+    private void selectImages() {
+        PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
                 openBottomPicker();
@@ -265,13 +287,13 @@ public class RequestActivity extends AppCompatActivity{
 
             @Override
             public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText ( RequestActivity.this,"Permission Denied", Toast.LENGTH_SHORT ).show ();
+                Toast.makeText(RequestActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }
         };
-        TedPermission.with ( this )
-                .setPermissionListener ( permissionListener )
-                .setPermissions ( Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check ();
+        TedPermission.with(this)
+                .setPermissionListener(permissionListener)
+                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();
     }
 
     private void openBottomPicker() {
@@ -280,14 +302,14 @@ public class RequestActivity extends AppCompatActivity{
                 .showTitle(false)
                 .setCompleteButtonText("Done")
                 .setEmptySelectionText("No Select")
-                .setSelectedUriList ( selectedListUri )
+                .setSelectedUriList(selectedListUri)
                 .showMultiImage(new TedBottomSheetDialogFragment.OnMultiImageSelectedListener() {
                     @Override
                     public void onImagesSelected(List<Uri> uriList) {
                         // here is selected image uri list
                         selectedListUri = uriList;
-                        mImageNum.setText ( "Số ảnh đã chọn: " + selectedListUri.size () );
-                        photoAdapter.setPhotos ( uriList );
+                        mImageNum.setText("Số ảnh đã chọn: " + selectedListUri.size());
+                        photoAdapter.setPhotos(uriList);
                     }
                 });
 
@@ -323,7 +345,7 @@ public class RequestActivity extends AppCompatActivity{
     public void onBackPressed() {
         // đặt resultCode là Activity.RESULT_CANCELED thể hiện
         // đã thất bại khi người dùng click vào nút Back.
-        setResult( Activity.RESULT_CANCELED);
+        setResult(Activity.RESULT_CANCELED);
         super.onBackPressed();
     }
 
