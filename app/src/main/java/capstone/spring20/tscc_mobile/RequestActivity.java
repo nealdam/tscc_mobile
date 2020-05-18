@@ -30,6 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import capstone.spring20.tscc_mobile.Api.ApiController;
 import capstone.spring20.tscc_mobile.Api.TSCCClient;
@@ -47,6 +49,7 @@ import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
 import capstone.spring20.tscc_mobile.dialog_custom.LoadingDialog;
+import capstone.spring20.tscc_mobile.util.LocationUtil;
 import gun0912.tedbottompicker.TedBottomPicker;
 import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 import retrofit2.Call;
@@ -228,26 +231,33 @@ public class RequestActivity extends AppCompatActivity {
                         imageEncoded = convertBitmapToString(img);
                         imageStringList.add(imageEncoded);
                     }
-                    //then get current location and send request to api
+                    //then get current location and check spam and send request to api
                     FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(RequestActivity.this);
-                    mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                                                                                     @Override
-                                                                                     public void onComplete(@NonNull Task<Location> task) {
-                                                                                         Location location = task.getResult();
-                                                                                         if (location != null) {
-                                                                                             Log.d(TAG, "onComplete get loca: " + location.getLatitude() + ", " + location.getLongitude());
-                                                                                             TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType),
-                                                                                                     TrashSizeConstant.getTrashSizeId(trashSize),
-                                                                                                     TrashWidthConstant.getTrashWidthId(trashWidth),
-                                                                                                     location.getLatitude(), location.getLongitude(),
-                                                                                                     imageStringList);
-                                                                                             postTrashRequest(trashRequest);
-                                                                                         } else {
-                                                                                             Toast.makeText(RequestActivity.this, "Gửi yêu cầu thất bại, không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
-                                                                                         }
-                                                                                     }
-                                                                                 }
-                    );
+                    mFusedLocationClient
+                            .getLastLocation()
+                            .addOnCompleteListener(new OnCompleteListener<Location>() {
+                                                       @Override
+                                                       public void onComplete(@NonNull Task<Location> task) {
+                                                           Location location = task.getResult();
+                                                           if (location != null) {
+                                                               Log.d(TAG, "onComplete get location: " + location.getLatitude() + ", " + location.getLongitude());
+                                                               if (isSpam(location)) {
+                                                                   Toast.makeText(RequestActivity.this, "Hôm nay bạn đã yêu cầu thu gom điểm rác này.", Toast.LENGTH_SHORT).show();
+                                                                   loadingDialog.dismissDialog();
+                                                               } else {
+                                                                   TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType),
+                                                                           TrashSizeConstant.getTrashSizeId(trashSize),
+                                                                           TrashWidthConstant.getTrashWidthId(trashWidth),
+                                                                           location.getLatitude(), location.getLongitude(),
+                                                                           imageStringList);
+                                                                   postTrashRequest(trashRequest);
+                                                               }
+                                                           } else {
+                                                               Toast.makeText(RequestActivity.this, "Gửi yêu cầu thất bại, không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
+                                                           }
+                                                       }
+                                                   }
+                            );
 
                 }
             }
@@ -349,4 +359,16 @@ public class RequestActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    private boolean isSpam(Location location) {
+        SharedPreferences s = this.getSharedPreferences(java.time.LocalDate.now().toString(), MODE_PRIVATE);
+        Map<String, String> locationMap = (Map<String, String>) s.getAll();
+        if (LocationUtil.isClose(location, locationMap))
+            return true;
+        //ko phải spam nên lưu lại location
+        SharedPreferences.Editor editor = s.edit();
+        Gson gson = new Gson();
+        editor.putString(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+        editor.apply();
+        return false;
+    }
 }
