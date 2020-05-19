@@ -11,12 +11,12 @@ public class TrashRequest {
     @SerializedName("trashTypeId")
     @Expose
     private String trashTypeId;
-    @SerializedName("trashSizeId")
+    @SerializedName("trashSize")
     @Expose
-    private String trashSizeId;
-    @SerializedName("trashWidthId")
+    private String trashSize;
+    @SerializedName("trashWidth")
     @Expose
-    private String trashWidthId;
+    private String trashWidth;
     @SerializedName("latitude")
     @Expose
     private double latitude;
@@ -37,20 +37,20 @@ public class TrashRequest {
         this.trashTypeId = trashTypeId;
     }
 
-    public String getTrashSizeId() {
-        return trashSizeId;
+    public String getTrashSize() {
+        return trashSize;
     }
 
-    public void setTrashSizeId(String trashSizeId) {
-        this.trashSizeId = trashSizeId;
+    public void setTrashSize(String trashSize) {
+        this.trashSize = trashSize;
     }
 
-    public String getTrashWidthId() {
-        return trashWidthId;
+    public String getTrashWidth() {
+        return trashWidth;
     }
 
-    public void setTrashWidthId(String trashWidthId) {
-        this.trashWidthId = trashWidthId;
+    public void setTrashWidth(String trashWidth) {
+        this.trashWidth = trashWidth;
     }
 
 
@@ -70,10 +70,10 @@ public class TrashRequest {
         this.longitude = longitude;
     }
 
-    public TrashRequest(String trashTypeId, String trashSizeId, String trashWidthId, double latitude, double longitude, List<String> images) {
+    public TrashRequest(String trashTypeId, String trashSize, String trashWidth, double latitude, double longitude, List<String> images) {
         this.trashTypeId = trashTypeId;
-        this.trashSizeId = trashSizeId;
-        this.trashWidthId = trashWidthId;
+        this.trashSize = trashSize;
+        this.trashWidth = trashWidth;
         this.latitude = latitude;
         this.longitude = longitude;
         this.images = images;

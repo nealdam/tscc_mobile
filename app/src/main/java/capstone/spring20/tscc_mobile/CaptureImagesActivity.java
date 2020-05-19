@@ -1,19 +1,15 @@
 package capstone.spring20.tscc_mobile;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
-import capstone.spring20.tscc_mobile.Entity.TrashRequest;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class CaptureImagesActivity extends AppCompatActivity {
-//hơm cần thiết nữa nên bỏ
-    TrashRequest trashRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

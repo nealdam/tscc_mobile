@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,9 +46,7 @@ import capstone.spring20.tscc_mobile.Api.ApiController;
 import capstone.spring20.tscc_mobile.Api.TSCCClient;
 import capstone.spring20.tscc_mobile.Entity.TrashRequest;
 import capstone.spring20.tscc_mobile.adapter.PhotoAdapter;
-import capstone.spring20.tscc_mobile.constant.TrashSizeConstant;
 import capstone.spring20.tscc_mobile.constant.TrashTypeConstant;
-import capstone.spring20.tscc_mobile.constant.TrashWidthConstant;
 import capstone.spring20.tscc_mobile.dialog_custom.LoadingDialog;
 import capstone.spring20.tscc_mobile.util.LocationUtil;
 import gun0912.tedbottompicker.TedBottomPicker;
@@ -59,7 +58,8 @@ import retrofit2.Response;
 public class RequestActivity extends AppCompatActivity {
     String TAG = "RequestActivity";
 
-    Spinner mType, mWidth, mSize;
+    Spinner mType;
+    EditText mWidth, mSize;
     Button mSubmit, mGallery, btnBack;
     FusedLocationProviderClient mFusedLocationClient;
     double myLatitude;
@@ -177,8 +177,8 @@ public class RequestActivity extends AppCompatActivity {
 
     private void setupBasic() {
         mType = findViewById(R.id.spType);
-        mSize = findViewById(R.id.spSize);
-        mWidth = findViewById(R.id.spWidth);
+        mSize = findViewById(R.id.txtSize);
+        mWidth = findViewById(R.id.txtWidth);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mImageNum = findViewById(R.id.txtImageNum);
         btnBack = findViewById(R.id.btn_back);
@@ -218,8 +218,8 @@ public class RequestActivity extends AppCompatActivity {
                     loadingDialog.dismissDialog();
                 } else {
                     final String trashType = mType.getSelectedItem().toString();
-                    final String trashSize = mSize.getSelectedItem().toString();
-                    final String trashWidth = mWidth.getSelectedItem().toString();
+                    final String trashSize = mSize.getText().toString();
+                    final String trashWidth = mWidth.getText().toString();
                     for (Uri uri : selectedListUri) {
                         try {
                             imageList.add(MediaStore.Images.Media.getBitmap(RequestActivity.this.getContentResolver(), uri));
@@ -245,11 +245,9 @@ public class RequestActivity extends AppCompatActivity {
                                                                    Toast.makeText(RequestActivity.this, "Hôm nay bạn đã yêu cầu thu gom điểm rác này.", Toast.LENGTH_SHORT).show();
                                                                    loadingDialog.dismissDialog();
                                                                } else {
-                                                                   TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType),
-                                                                           TrashSizeConstant.getTrashSizeId(trashSize),
-                                                                           TrashWidthConstant.getTrashWidthId(trashWidth),
-                                                                           location.getLatitude(), location.getLongitude(),
-                                                                           imageStringList);
+                                                                   TrashRequest trashRequest = new TrashRequest(TrashTypeConstant.getTrashTypeId(trashType), trashSize, trashWidth,
+                                                                                                               location.getLatitude(), location.getLongitude(),
+                                                                                                               imageStringList);
                                                                    postTrashRequest(trashRequest);
                                                                }
                                                            } else {
@@ -329,19 +327,10 @@ public class RequestActivity extends AppCompatActivity {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> trashTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.trashType, android.R.layout.simple_spinner_item);
-        ArrayAdapter<CharSequence> trashWidthAdapter = ArrayAdapter.createFromResource(this,
-                R.array.trashWidth, android.R.layout.simple_spinner_item);
-        ArrayAdapter<CharSequence> trashSizeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.trashSize, android.R.layout.simple_spinner_item);
-
         // Specify the layout to use when the list of choices appears
         trashTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        trashSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        trashWidthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the Adapter to the spinner
         mType.setAdapter(trashTypeAdapter);
-        mSize.setAdapter(trashSizeAdapter);
-        mWidth.setAdapter(trashWidthAdapter);
     }
 
     private String convertBitmapToString(Bitmap bitmap) {

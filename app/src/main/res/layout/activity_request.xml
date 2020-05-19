@@ -138,11 +138,15 @@
             android:layout_weight="3"
             android:textStyle="bold"/>
 
-        <Spinner
-            android:id="@+id/spWidth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"/>
+            <EditText
+                android:id="@+id/txtWidth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ems="20"
+                android:hint="5Kg"
+                android:inputType="number" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -151,19 +155,23 @@
             android:weightSum="5"
             android:orientation="horizontal"
             android:layout_marginTop="20dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/spWidth"
+                android:layout_below="@id/txtWidth"
                 android:text="Kích thước (ước tính)"
                 android:layout_weight="3"
                 android:textStyle="bold"/>
 
-            <Spinner
-                android:id="@+id/spSize"
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/txtSize"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:ems="20"
+                android:hint="2m³"
+                android:inputType="number" />
 
         </LinearLayout>
 
@@ -199,7 +207,7 @@
             android:id="@+id/btnLibrary"
             android:layout_width="@dimen/btn4"
             android:layout_height="wrap_content"
-            android:layout_below="@id/spSize"
+            android:layout_below="@id/txtSize"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/default_space"
             android:text="Thêm ảnh"
