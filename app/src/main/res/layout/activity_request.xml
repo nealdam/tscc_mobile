@@ -25,9 +25,9 @@
 
             <Button
                 android:id="@+id/btn_back"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_arrow_back_white_50dp"/>
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_chevron_left_white_50dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/txt2"
-                android:text="Thông tin điểm rác"
+                android:text="Báo cáo điểm rác"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:textColor="@color/cardview_light_background"
@@ -93,13 +93,6 @@
         android:layout_weight="4"
         android:layout_margin="10dp">
 
-        <TextView
-            android:id="@+id/txtImageNum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10sp"
-            android:text="Image number" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,7 +103,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtImageNum"
                 android:layout_weight="3"
                 android:text="Loại rác"
                 android:textSize="@dimen/txt3"
@@ -128,14 +120,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="5"
+            android:weightSum="4"
             android:layout_marginTop="20dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/spType"
-            android:text="Khối lượng (ước tính)"
-            android:layout_weight="3"
+            android:text="Khối lượng( ước tính - Kg )"
+            android:layout_weight="2"
             android:textStyle="bold"/>
 
             <EditText
@@ -144,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:ems="20"
-                android:hint="5Kg"
+                android:hint="5"
                 android:inputType="number" />
 
         </LinearLayout>
@@ -152,7 +144,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="5"
+            android:weightSum="4"
             android:orientation="horizontal"
             android:layout_marginTop="20dp">
 
@@ -160,9 +152,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtWidth"
-                android:text="Kích thước (ước tính)"
-                android:layout_weight="3"
-                android:textStyle="bold"/>
+                android:layout_weight="2"
+                android:text="Kích thước( ước tính - m³ )"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/txtSize"
@@ -170,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:ems="20"
-                android:hint="2m³"
+                android:hint="2"
                 android:inputType="number" />
 
         </LinearLayout>

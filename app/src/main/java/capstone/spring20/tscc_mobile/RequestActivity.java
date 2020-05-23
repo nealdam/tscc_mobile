@@ -180,7 +180,7 @@ public class RequestActivity extends AppCompatActivity {
         mSize = findViewById(R.id.txtSize);
         mWidth = findViewById(R.id.txtWidth);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mImageNum = findViewById(R.id.txtImageNum);
+        //mImageNum = findViewById(R.id.txtImageNum);
         btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

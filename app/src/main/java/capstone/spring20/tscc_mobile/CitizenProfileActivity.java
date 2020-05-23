@@ -1,5 +1,6 @@
 package capstone.spring20.tscc_mobile;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,7 +27,7 @@ public class CitizenProfileActivity extends AppCompatActivity {
 
     TextView mName, mRole, mEmail, mPhoneNumber;
     ImageView mAvatar;
-    Button mLogout;
+    Button mLogout, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,13 @@ public class CitizenProfileActivity extends AppCompatActivity {
         mPhoneNumber = findViewById(R.id.txtPhoneNumber);
         mAvatar = findViewById(R.id.ivAvatar);
         mLogout = findViewById(R.id.btnlogout);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CitizenProfileActivity.this.onBackPressed();
+            }
+        });
 
         mAvatar.setImageDrawable(getResources().getDrawable(R.drawable.user));
 
@@ -79,6 +87,14 @@ public class CitizenProfileActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // đặt resultCode là Activity.RESULT_CANCELED thể hiện
+        // đã thất bại khi người dùng click vào nút Back.
+        setResult(Activity.RESULT_CANCELED);
+        super.onBackPressed();
     }
 
 }
