@@ -69,8 +69,6 @@ public class RequestActivity extends AppCompatActivity {
     List<String> imageStringList = new ArrayList<>();
     List<Bitmap> imageList = new ArrayList<>();
     String token;
-    TextView mImageNum;
-    int imageNum = 0;
     GridView gridView;
     //    ImageView mImageView1;
     RecyclerView rcvPhoto;
@@ -91,8 +89,6 @@ public class RequestActivity extends AppCompatActivity {
         if (data != null) {
             image = (Bitmap) data.get("image");
             imageList.add(image);
-            imageNum = imageList.size(); //show số lượng image
-            mImageNum.setText("Số ảnh đã chọn:" + imageNum);
         }
 
     }
@@ -316,7 +312,6 @@ public class RequestActivity extends AppCompatActivity {
                     public void onImagesSelected(List<Uri> uriList) {
                         // here is selected image uri list
                         selectedListUri = uriList;
-                        mImageNum.setText("Số ảnh đã chọn: " + selectedListUri.size());
                         photoAdapter.setPhotos(uriList);
                     }
                 });
