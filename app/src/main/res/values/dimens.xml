@@ -2,6 +2,7 @@
 <resources>
     <dimen name="txt1">40sp</dimen>
     <dimen name="txt2">30sp</dimen>
+    <dimen name="txt_tt">25sp</dimen>
     <dimen name="txt2_5">20sp</dimen>
     <dimen name="txt3">15sp</dimen>
 

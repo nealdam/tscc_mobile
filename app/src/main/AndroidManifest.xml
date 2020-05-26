@@ -30,10 +30,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".CaptureImagesActivity" />
-        <activity android:name=".CitizenProfileActivity" />
+        <activity android:name=".CitizenProfileActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RequestActivity"/>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".RequestActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

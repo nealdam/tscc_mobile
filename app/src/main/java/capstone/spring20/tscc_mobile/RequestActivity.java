@@ -60,7 +60,7 @@ public class RequestActivity extends AppCompatActivity {
 
     Spinner mType;
     EditText mWidth, mSize;
-    Button mSubmit, mGallery, btnBack;
+    Button mSubmit, mGallery;
     FusedLocationProviderClient mFusedLocationClient;
     double myLatitude;
     double myLongitude;
@@ -81,6 +81,8 @@ public class RequestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
 
+        getSupportActionBar().setTitle("Báo cáo điểm rác");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupBasic();
         setupSpinner();
 
@@ -177,13 +179,6 @@ public class RequestActivity extends AppCompatActivity {
         mWidth = findViewById(R.id.txtWidth);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         //mImageNum = findViewById(R.id.txtImageNum);
-        btnBack = findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RequestActivity.this.onBackPressed();
-            }
-        });
 
         //get jwt token
         SharedPreferences jwtSharedPreferences = this.getSharedPreferences("JWT", MODE_PRIVATE);
@@ -333,14 +328,6 @@ public class RequestActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
 //        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
         return Base64.getEncoder().encodeToString(outputStream.toByteArray());
-    }
-
-    @Override
-    public void onBackPressed() {
-        // đặt resultCode là Activity.RESULT_CANCELED thể hiện
-        // đã thất bại khi người dùng click vào nút Back.
-        setResult(Activity.RESULT_CANCELED);
-        super.onBackPressed();
     }
 
     private boolean isSpam(Location location) {
