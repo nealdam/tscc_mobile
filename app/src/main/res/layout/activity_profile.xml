@@ -73,7 +73,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_margin="15dp">
 
             <TextView
@@ -82,14 +82,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:text="Tên:"
-                android:textSize="@dimen/txt2_5"
+                android:textSize="@dimen/txt3"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txtName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Triệu Vân"
+                android:hint="Triệu Vân"
                 android:textSize="@dimen/txt2_5" />
 
         </LinearLayout>
@@ -97,7 +97,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_margin="15dp">
 
             <TextView
@@ -107,13 +107,13 @@
                 android:text="Email:"
                 android:textStyle="bold"
                 android:layout_marginEnd="10dp"
-                android:textSize="@dimen/txt2_5"/>
+                android:textSize="@dimen/txt3"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtEmail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="van@email.com"
+                android:hint="van@email.com"
                 android:textSize="@dimen/txt2_5"/>
 
         </LinearLayout>
@@ -121,7 +121,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_margin="15dp">
 
             <TextView
@@ -131,15 +131,26 @@
                 android:text="Số điện thoại:"
                 android:textStyle="bold"
                 android:layout_marginEnd="10dp"
-                android:textSize="@dimen/txt2_5"/>
+                android:textSize="@dimen/txt3"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtPhoneNumber"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="090456456123"
+                android:hint="090456456123"
                 android:textSize="@dimen/txt2_5"/>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_update_profile"
+            android:text="Cập nhật"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -156,7 +167,6 @@
             android:id="@+id/btnlogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:background="@drawable/button_register"
             android:text="Đăng xuất"
             android:textColor="@color/white"
