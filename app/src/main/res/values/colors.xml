@@ -11,4 +11,5 @@
     <color name="white">#ffffff</color>
     <color name="titleBar">#00c853</color>
     <color name="text">#9e9e9e</color>
+    <color name="text_request">#2e7c31</color>
 </resources>

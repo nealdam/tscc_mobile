@@ -47,6 +47,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hảy cung cấp hình ảnh thật."
+                android:textStyle="italic|bold"
+                android:textAlignment="center"
+                android:textColor="@color/text_request"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chụp trong khảng cách 2 đến 3 mét."
+                android:textStyle="italic|bold"
+                android:textAlignment="center"
+                android:textColor="@color/text_request"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Để chúng tôi có thể xử lý nhanh hơn."
+                android:textStyle="italic|bold"
+                android:textAlignment="center"
+                android:textColor="@color/text_request"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Xin chân thành cám ơn sự hổ trợ của bạn!"
+                android:textStyle="italic|bold"
+                android:textAlignment="center"
+                android:textColor="@color/text_request"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
             android:layout_marginTop="20dp">
