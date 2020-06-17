@@ -34,7 +34,8 @@
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RequestActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
