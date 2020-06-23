@@ -197,6 +197,25 @@ public class RequestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 loadingDialog.startLoadingDialog();
+
+                int size = 1;
+                int width = 1;
+                //add check
+
+                try {
+                    if (mSize.getText().toString() != null) {
+                        size = Integer.parseInt(mSize.getText().toString());
+                        System.out.println("trash size: " + size);
+                    }
+                    if (mWidth.getText().toString() != null) {
+                        width = Integer.parseInt(mWidth.getText().toString());
+                        System.out.println("trash width: " + width);
+                    }
+
+                } catch (NumberFormatException nfe) {
+                    System.out.println("Could not parse " + nfe);
+                }
+
                 if (selectedListUri == null || selectedListUri.isEmpty()) {
                     //Toast.makeText ( RequestActivity.this, "Bạn cần cung cấp hình ảnh!", Toast.LENGTH_LONG ).show ();
                     new AlertDialog.Builder(RequestActivity.this)
@@ -207,7 +226,26 @@ public class RequestActivity extends AppCompatActivity {
                             .show();
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     loadingDialog.dismissDialog();
-                } else {
+                } else if (width == 0 || size == 0) {
+                    new AlertDialog.Builder(RequestActivity.this)
+                            .setTitle("Không thể gửi yêu cầu")
+                            .setMessage("Bạn không thể nhập khối lượng và kích thước là 0!")
+                            .setNegativeButton(android.R.string.ok, null)
+                            .setIcon(R.drawable.ic_error_50)
+                            .show();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    loadingDialog.dismissDialog();
+                } else if (width >= 1000 || size >= 8000) {
+                    new AlertDialog.Builder(RequestActivity.this)
+                            .setTitle("Không thể gửi yêu cầu")
+                            .setMessage("Bạn không thể nhập khối lượng và kích thước quá lớn!")
+                            .setNegativeButton(android.R.string.ok, null)
+                            .setIcon(R.drawable.ic_error_50)
+                            .show();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    loadingDialog.dismissDialog();
+                }
+                else {
                     final String trashType = mType.getSelectedItem().toString();
                     final String trashSize = mSize.getText().toString();
                     final String trashWidth = mWidth.getText().toString();
